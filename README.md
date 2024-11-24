@@ -1,3 +1,7 @@
+V0.38
+- Itinerary: Hotel Card
+  - Fixed affliate ID link in booking.com URL generation
+
 V0.37
 - Itinerary: Activity Card
   - View Map button aligned to right

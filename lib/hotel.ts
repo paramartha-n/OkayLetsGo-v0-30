@@ -34,7 +34,7 @@ export function generateHotelSearchUrl(city: string, checkIn: Date, checkOut: Da
     order: 'review_score_and_price'
   });
   
-  return `https://www.booking.com/searchresults.html?aid=1270868?${params.toString()}&nflt=${priceFilter}%3Breview_score%3D80%3Bdistance%3D3000`;
+  return `https://www.booking.com/searchresults.html?${params.toString()}&nflt=${priceFilter}%3Breview_score%3D80%3Bdistance%3D3000?aid=1270868`;
 }
 
 export function getPriceRangeForHotelType(type: string): string {
