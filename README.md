@@ -1,3 +1,13 @@
+V0.45
+- Itinerary: Hotel Card
+  - Mobile friendly
+
+- Itinerary: Restaurant Card
+  - Mobile friendly
+
+- Itinerary: Trip Header
+  - Added day of the week
+
 V0.44
 - User input form: UI/UX
   - Mobile friendly

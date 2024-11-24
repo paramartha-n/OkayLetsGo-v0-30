@@ -34,7 +34,7 @@ export function TripHeader({
             Your <span>{numberOfDays} {numberOfDays === 1 ? 'day' : 'days'}</span> Trip to {city}
           </h2>
           <p className="text-lg text-white/90 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
-            {format(startDate, "MMMM d")} - {format(endDate, "MMMM d, yyyy") }
+            {format(startDate, "EEEE MMMM d")} - {format(endDate, "EEEE MMMM d, yyyy") }
           </p>
         </div>
       </div>

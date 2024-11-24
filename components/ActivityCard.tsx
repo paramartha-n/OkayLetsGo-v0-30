@@ -177,7 +177,7 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
             <Button
               variant="outline"
               size="sm"
-              className="h-8 text-sm text-muted-foreground hover:text-primary flex items-center gap-1.5 shrink-0"
+              className="h-[26px] sm:h-8 text-sm text-muted-foreground hover:text-primary flex items-center gap-1.5 shrink-0"
               onClick={() => {
                 const mapsUrl = placeDetails.placeId
                   ? `https://www.google.com/maps/place/?q=place_id:${placeDetails.placeId}`

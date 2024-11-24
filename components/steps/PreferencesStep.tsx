@@ -32,11 +32,7 @@ export default function PreferencesStep({ onNext }: PreferencesStepProps) {
           value={tripData.preferences}
           onChange={(e) => handlePreferencesChange(e.target.value)}
           className="min-h-[200px] pl-10 resize-none"
-          placeholder="Examples:
-• Visit the Eiffel Tower at sunset
-• Take a cooking class
-• See the Mona Lisa at the Louvre
-• Have dinner at a Michelin star restaurant"
+          placeholder="Visit the Eiffel Tower at sunset, Take a cooking class.."
         />
       </div>
     </div>

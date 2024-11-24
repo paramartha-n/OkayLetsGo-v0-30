@@ -30,14 +30,14 @@ export function FlightCard({
     <Card className="p-6">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold">Flights</h3>
+          <h3 className="text-[13px] sm:text-xl font-semibold">Flights</h3>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.open(skyscannerUrl, '_blank')}
             className="flex items-center space-x-2"
           >
-            <span>Search on Skyscanner</span>
+            <span className="text-[11px] sm:text-sm">Search on Skyscanner</span>
             <ExternalLink className="w-4 h-4 ml-2" />
           </Button>
         </div>
@@ -47,19 +47,19 @@ export function FlightCard({
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Plane className="w-4 h-4" />
-              <h4 className="font-medium">Outbound Flight</h4>
+              <h4 className="text-[12px] sm:text-base font-medium">Outbound Flight</h4>
             </div>
             <div className="relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-bold">{originCity.split(',')[0]}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-[11px] sm:text-sm font-bold">{originCity.split(',')[0]}</p>
+                  <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(departureDate, "MMM d, yyyy")}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-bold">{destinationCity.split(',')[0]}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-[11px] sm:text-sm font-bold">{destinationCity.split(',')[0]}</p>
+                  <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(departureDate, "MMM d, yyyy")}
                   </p>
                 </div>
@@ -77,19 +77,19 @@ export function FlightCard({
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Plane className="w-4 h-4" />
-              <h4 className="font-medium">Return Flight</h4>
+              <h4 className="text-[12px] sm:text-base font-medium">Return Flight</h4>
             </div>
             <div className="relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-bold">{destinationCity.split(',')[0]}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-[11px] sm:text-sm font-bold">{destinationCity.split(',')[0]}</p>
+                  <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(returnDate, "MMM d, yyyy")}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-bold">{originCity.split(',')[0]}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-[11px] sm:text-sm font-bold">{originCity.split(',')[0]}</p>
+                  <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(returnDate, "MMM d, yyyy")}
                   </p>
                 </div>
@@ -107,19 +107,19 @@ export function FlightCard({
         <Separator />
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-between text-[11px] sm:text-sm">
             <div className="flex items-center space-x-2">
               <Ban className="w-4 h-4" />
               <span>Maximum Stops</span>
             </div>
             <span className="font-medium">1 stop</span>
           </div>
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-between text-[11px] sm:text-sm">
             <div className="flex items-center space-x-2">
               <Banknote className="w-4 h-4" />
-              <span className="text-sm">Estimated Total Cost</span>
+              <span>Estimated Total Cost</span>
             </div>
-            <span className="text-sm">€{estimatedPrice.min}-€{estimatedPrice.max}</span>
+            <span>€{estimatedPrice.min}-€{estimatedPrice.max}</span>
           </div>
         </div>
       </div>
