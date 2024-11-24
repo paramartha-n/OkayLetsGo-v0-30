@@ -1,3 +1,7 @@
+V0.44
+- User input form: UI/UX
+  - Mobile friendly
+
 V0.43
 - User input form: UX
   - Currency selector only shows on SummaryStep

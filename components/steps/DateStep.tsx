@@ -54,7 +54,7 @@ export default function DateStep({ onNext }: DateStepProps) {
   return (
     <div className="space-y-4">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold mb-2">When are you traveling?</h2>
+        <h2 className="text-lg font-semibold mb-2">When are you traveling?</h2>
       </div>
 
       <Card className="p-4">

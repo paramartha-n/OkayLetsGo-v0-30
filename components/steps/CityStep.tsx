@@ -31,7 +31,7 @@ export default function CityStep({ onNext, isFirstStep }: CityStepProps) {
   return (
     <div className="space-y-4">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold mb-2">Where would you like to go?</h2>
+        <h2 className="text-lg font-semibold mb-2">Where would you like to go?</h2>
       </div>
 
       <div className="flex space-x-4">

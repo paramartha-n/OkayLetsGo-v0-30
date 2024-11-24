@@ -7,6 +7,7 @@ import { Hotel, Home, Building2, Tent, BedDouble, Building } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { useTripContext } from "@/context/TripContext";
 import PlacesAutocomplete from "@/components/PlacesAutocomplete";
+import React from "react";
 
 const accommodations = [
   {
@@ -14,42 +15,42 @@ const accommodations = [
     icon: <Tent className="w-4 h-4" />,
     title: "Backpacker",
     description: "Hostels and shared rooms",
-    price: "€5-€30",
+    price: "€5-€30\nper night",
   },
   {
     id: "budget",
     icon: <Home className="w-4 h-4" />,
     title: "Budget",
     description: "Basic hotels and guesthouses",
-    price: "€30-€80",
+    price: "€30-€80\nper night",
   },
   {
     id: "standard",
     icon: <BedDouble className="w-4 h-4" />,
     title: "Standard",
     description: "3-star hotels and apartments",
-    price: "€80-€130",
+    price: "€80-€130\nper night",
   },
   {
     id: "comfort",
     icon: <Building2 className="w-4 h-4" />,
     title: "Comfort",
     description: "4-star hotels with amenities",
-    price: "€130-€300",
+    price: "€130-€300\nper night",
   },
   {
     id: "first-class",
     icon: <Building className="w-4 h-4" />,
     title: "First Class",
     description: "Premium hotels and suites",
-    price: "€300-€500",
+    price: "€300-€500\nper night",
   },
   {
     id: "luxury",
     icon: <Hotel className="w-4 h-4" />,
     title: "Luxury",
     description: "5-star hotels and resorts",
-    price: "€500-€5000",
+    price: "€500-€5000\nper night",
   },
 ];
 
@@ -79,7 +80,7 @@ export default function HotelStep({ onNext }: HotelStepProps) {
   return (
     <div className="space-y-4">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold mb-2">Where would you like to stay?</h2>
+        <h2 className="text-lg font-semibold mb-2">Where would you like to stay?</h2>
       </div>
 
       {!hasCustomHotel ? (
@@ -95,19 +96,12 @@ export default function HotelStep({ onNext }: HotelStepProps) {
                 }`}
                 onClick={() => handleSelect(option.id)}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-start space-x-3">
-                    <div className="flex-1 space-y-1">
-                      <div className="flex items-center space-x-2">
-                        <div className={`p-2 rounded-full ${
-                          tripData.hotel.type === option.id
-                            ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
-                            : "bg-traveloka-primary/10 text-traveloka-primary"
-                        }`}>
-                          {option.icon}
-                        </div>
+                <CardContent className="p-2 sm:p-4">
+                  <div className="flex items-start justify-end space-x-2 sm:space-x-3">
+                    <div className="flex-1 flex flex-col items-end space-y-1">
+                      <div className="flex items-center justify-end space-x-1 sm:space-x-2 w-full">
                         <Label 
-                          className={`font-medium ${
+                          className={`font-bold text-[11px] sm:text-base truncate text-right ${
                             tripData.hotel.type === option.id
                               ? "text-traveloka-primary"
                               : ""
@@ -115,16 +109,28 @@ export default function HotelStep({ onNext }: HotelStepProps) {
                         >
                           {option.title}
                         </Label>
+                        <div className={`p-1.5 sm:p-2 rounded-full ${
+                          tripData.hotel.type === option.id
+                            ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
+                            : "bg-traveloka-primary/10 text-traveloka-primary"
+                        }`}>
+                          {option.icon}
+                        </div>
                       </div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground text-right">
                         {option.description}
                       </p>
-                      <div className={`inline-block px-2 py-1 mt-1 text-xs rounded-full ${
+                      <div className={`inline-block px-2 py-1 mt-1 text-xs rounded-full text-center ${
                         tripData.hotel.type === option.id
                           ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
                           : "bg-traveloka-primary/10 text-traveloka-primary"
                       }`}>
-                        {option.price} per night
+                        {option.price.split('\n').map((line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            {index === 0 && <br />}
+                          </React.Fragment>
+                        ))}
                       </div>
                     </div>
                   </div>

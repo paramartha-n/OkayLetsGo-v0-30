@@ -54,7 +54,7 @@ export default function TransportStep({ onNext }: TransportStepProps) {
   return (
     <div className="space-y-4">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold mb-2">How would you like to get around?</h2>
+        <h2 className="text-lg font-semibold mb-2">How would you like to get around?</h2>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -68,19 +68,12 @@ export default function TransportStep({ onNext }: TransportStepProps) {
             }`}
             onClick={() => toggleTransport(transport.id)}
           >
-            <CardContent className="p-4">
-              <div className="flex items-start space-x-3">
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center space-x-2">
-                    <div className={`p-2 rounded-full ${
-                      tripData.transport.includes(transport.id)
-                        ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
-                        : "bg-traveloka-primary/10 text-traveloka-primary"
-                    }`}>
-                      {transport.icon}
-                    </div>
+            <CardContent className="p-2 sm:p-4">
+              <div className="flex items-start justify-end space-x-2 sm:space-x-3">
+                <div className="flex-1 flex flex-col items-end space-y-1">
+                  <div className="flex items-center justify-end space-x-1 sm:space-x-2 w-full">
                     <Label 
-                      className={`font-medium ${
+                      className={`font-bold text-[11px] sm:text-base truncate text-right ${
                         tripData.transport.includes(transport.id)
                           ? "text-traveloka-primary"
                           : ""
@@ -88,11 +81,18 @@ export default function TransportStep({ onNext }: TransportStepProps) {
                     >
                       {transport.label}
                     </Label>
+                    <div className={`p-1.5 sm:p-2 rounded-full ${
+                      tripData.transport.includes(transport.id)
+                        ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
+                        : "bg-traveloka-primary/10 text-traveloka-primary"
+                    }`}>
+                      {transport.icon}
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-[10px] sm:text-xs text-muted-foreground text-right">
                     {transport.description}
                   </p>
-                  <div className={`inline-block px-2 py-1 mt-1 text-xs rounded-full ${
+                  <div className={`inline-block px-2 py-1 mt-1 text-[10px] sm:text-xs rounded-full text-center ${
                     tripData.transport.includes(transport.id)
                       ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
                       : "bg-traveloka-primary/10 text-traveloka-primary"

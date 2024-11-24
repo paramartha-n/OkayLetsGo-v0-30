@@ -56,7 +56,7 @@ export default function OriginCityStep({ onNext, isFirstStep }: OriginCityStepPr
   return (
     <div className="space-y-4">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold mb-2">Where are you traveling from?</h2>
+        <h2 className="text-lg font-semibold mb-2">Where are you traveling from?</h2>
       </div>
 
       <div className="relative flex gap-2">

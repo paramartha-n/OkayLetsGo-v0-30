@@ -18,7 +18,7 @@ export default function PreferencesStep({ onNext }: PreferencesStepProps) {
   return (
     <div className="space-y-4">
       <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold mb-2">Any specific places or activities?</h2>
+        <h2 className="text-lg font-semibold mb-2">Any specific places or activities?</h2>
         <p className="text-muted-foreground text-sm">
           List any must-visit places or must-do activities you'd like included in your itinerary
         </p>
