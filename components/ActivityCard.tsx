@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin, Clock, Ticket, Star, Utensils } from "lucide-react";
+import { MapPin, Clock, Ticket, Star } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -26,24 +26,7 @@ interface PlaceDetails {
   latitude?: number;
   longitude?: number;
   rating?: number;
-  priceLevel?: number;
-}
-
-function getPriceRange(priceLevel: number): string {
-  switch (priceLevel) {
-    case 0:
-      return "Under $10";
-    case 1:
-      return "$10-30";
-    case 2:
-      return "$30-60";
-    case 3:
-      return "$60-100";
-    case 4:
-      return "$100+";
-    default:
-      return "Price N/A";
-  }
+  userRatingsTotal?: number;
 }
 
 export function ActivityCard({ activity, description, city, type = 'activity', duration, price, recommendedDish }: ActivityCardProps) {
@@ -103,7 +86,7 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
               latitude: place.geometry?.location?.lat?.(),
               longitude: place.geometry?.location?.lng?.(),
               rating: place.rating,
-              priceLevel: place.price_level
+              userRatingsTotal: place.user_ratings_total
             });
             setLoading(false);
           } else {
@@ -263,14 +246,10 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
                 <div className="flex items-center text-sm">
                   <Star className="w-4 h-4 mr-1 fill-yellow-500" />
                   <span className="text-foreground">{placeDetails.rating.toFixed(1)}</span>
-                  {placeDetails.priceLevel !== undefined && (
-                    <>
-                      <span className="mx-2">•</span>
-                      <Utensils className="w-4 h-4 mr-1" />
-                      <span className="text-foreground">
-                        {getPriceRange(placeDetails.priceLevel)}
-                      </span>
-                    </>
+                  {placeDetails.userRatingsTotal && (
+                    <span className="text-muted-foreground ml-1">
+                      ({placeDetails.userRatingsTotal.toLocaleString()} reviews)
+                    </span>
                   )}
                 </div>
               )}

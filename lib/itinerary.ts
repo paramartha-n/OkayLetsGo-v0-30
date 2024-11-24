@@ -78,6 +78,7 @@ export async function generateItinerary(tripData: any) {
     - Exactly 2 activities per day
     - Exactly 2 restaurants per day (lunch and dinner)
     - For restaurants, include a "Recommended Dish" line with the dish name followed by a dash and its description
+    - Only recommend restaurants with Google ratings of 4.0 or higher, and with over 1,000 reviews
     - For activities (not restaurants), include:
       * "Duration:" line with estimated visit time in hours
       * "Price:" line with entrance fee in local currency (use "Free" if no entrance fee)

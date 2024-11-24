@@ -1,3 +1,9 @@
+V0.39
+- Itinerary: Restaurant Card
+  - Added creteria for Rating Above 4.0 and 1,000+ reviews
+  - Added number of reviews
+  - Remove average price per meal
+
 V0.38
 - Itinerary: Hotel Card
   - Fixed affliate ID link in booking.com URL generation
