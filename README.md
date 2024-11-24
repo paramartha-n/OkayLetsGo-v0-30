@@ -1,3 +1,7 @@
+V0.43
+- User input form: UX
+  - Currency selector only shows on SummaryStep
+
 V0.42
 - User input form: UX
   - Optimized layout for vertical space savings

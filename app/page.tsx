@@ -83,8 +83,8 @@ export default function Home() {
               className="flex-1"
             >
               <AccordionItem value="step-form" className="border-none">
-                <AccordionTrigger className="py-2 w-full">
-                  <div className="flex flex-col w-full gap-2">
+                <AccordionTrigger className="py-4 w-full">
+                  <div className="flex flex-col w-full gap-3">
                     <span className="text-base font-medium">
                       {steps.find((step) => step.id === currentStep)?.title}
                     </span>
@@ -104,12 +104,13 @@ export default function Home() {
                     </div>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="pt-0">
-                  <Card className="p-4">
-                    <div className="flex justify-end mb-4">
-                      <CurrencySelector />
-                    </div>
-
+                <AccordionContent>
+                  <Card className="p-6">
+                    {currentStep === steps.length && (
+                      <div className="flex justify-end mb-4">
+                        <CurrencySelector />
+                      </div>
+                    )}
                     <div className="scale-[0.95] origin-top">
                       {CurrentStepComponent && (
                         <CurrentStepComponent 
