@@ -1,3 +1,7 @@
+V0.42
+- User input form: UX
+  - Optimized layout for vertical space savings
+
 V0.41
 - Itinerary: Activity Card
   - Faster and stable itinerary generation

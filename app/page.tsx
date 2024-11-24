@@ -75,21 +75,6 @@ export default function Home() {
       <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
         <div className="mx-auto px-4 w-full md:min-w-[960px] md:w-1/2 md:max-w-[1400px]">
           <div className="flex flex-col min-h-screen">
-            <div className="flex justify-center space-x-2 py-4">
-              {steps.map((step) => (
-                <div
-                  key={step.id}
-                  className={`w-8 h-1 rounded ${
-                    step.id === currentStep
-                      ? "bg-primary"
-                      : step.id < currentStep
-                      ? "bg-primary/60"
-                      : "bg-gray-200"
-                  }`}
-                />
-              ))}
-            </div>
-
             <Accordion 
               type="single" 
               collapsible 
@@ -98,13 +83,29 @@ export default function Home() {
               className="flex-1"
             >
               <AccordionItem value="step-form" className="border-none">
-                <AccordionTrigger className="py-2">
-                  <span className="text-lg font-semibold">
-                    {steps.find((step) => step.id === currentStep)?.title}
-                  </span>
+                <AccordionTrigger className="py-2 w-full">
+                  <div className="flex flex-col w-full gap-2">
+                    <span className="text-base font-medium">
+                      {steps.find((step) => step.id === currentStep)?.title}
+                    </span>
+                    <div className="flex justify-center space-x-2">
+                      {steps.map((step) => (
+                        <div
+                          key={step.id}
+                          className={`w-8 h-1 rounded transition-colors ${
+                            step.id === currentStep
+                              ? "bg-primary"
+                              : step.id < currentStep
+                              ? "bg-primary/60"
+                              : "bg-gray-200"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </AccordionTrigger>
-                <AccordionContent>
-                  <Card className="p-6">
+                <AccordionContent className="pt-0">
+                  <Card className="p-4">
                     <div className="flex justify-end mb-4">
                       <CurrencySelector />
                     </div>
