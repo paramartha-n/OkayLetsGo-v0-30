@@ -29,9 +29,11 @@ interface PlaceDetails {
 export function ActivityCard({ activity, description, city, type = 'activity', duration, recommendedDish }: ActivityCardProps) {
   const [placeDetails, setPlaceDetails] = useState<PlaceDetails>({ imageUrl: null });
   const [loading, setLoading] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
+  const MAX_RETRIES = 3;
 
   useEffect(() => {
-    const fetchPlaceDetails = async () => {
+    const fetchPlaceDetails = async (attempt: number = 0) => {
       if (!window.google?.maps) {
         console.error('Google Maps not loaded');
         return;
@@ -39,39 +41,95 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
 
       try {
         const service = new google.maps.places.PlacesService(document.createElement('div'));
-        const searchQuery = `${activity} ${city}`.replace(/[^\w\s]/gi, '');
+        
+        // Generate different search queries based on retry attempt
+        let searchQuery = '';
+        if (attempt === 0) {
+          searchQuery = `${activity} ${city}`.replace(/[^\w\s]/gi, '');
+        } else if (attempt === 1) {
+          // Try with just the activity name
+          searchQuery = activity.replace(/[^\w\s]/gi, '');
+        } else {
+          // Try with activity + landmarks/attractions
+          searchQuery = `${activity} landmarks attractions ${city}`.replace(/[^\w\s]/gi, '');
+        }
 
         const request = {
           query: searchQuery,
           type: type === 'activity' ? 'tourist_attraction' : 'restaurant'
         };
 
-        service.textSearch(request, (results, status) => {
-          if (
-            status === google.maps.places.PlacesServiceStatus.OK &&
-            results &&
-            results[0]
-          ) {
+        service.textSearch(request, async (results, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK && results?.[0]) {
             const place = results[0];
-            const imageUrl = place.photos?.[0]?.getUrl({ maxWidth: 800, maxHeight: 600 }) || null;
+            
+            // Try to get photo from the first result
+            let imageUrl = place.photos?.[0]?.getUrl({ maxWidth: 800, maxHeight: 600 }) || null;
+            
+            // If no photo in first result, try other results
+            if (!imageUrl && results.length > 1) {
+              for (let i = 1; i < results.length; i++) {
+                if (results[i].photos?.[0]) {
+                  imageUrl = results[i].photos[0].getUrl({ maxWidth: 800, maxHeight: 600 });
+                  break;
+                }
+              }
+            }
+
             setPlaceDetails({ 
               imageUrl,
               placeId: place.place_id,
               latitude: place.geometry?.location?.lat(),
               longitude: place.geometry?.location?.lng()
             });
+            setLoading(false);
           } else {
-            setPlaceDetails({ imageUrl: null });
+            // Handle different error statuses
+            if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS ||
+                status === google.maps.places.PlacesServiceStatus.INVALID_REQUEST) {
+              if (attempt < MAX_RETRIES - 1) {
+                // Try again with a different search query
+                const delay = Math.min(1000 * Math.pow(2, attempt), 5000); // Exponential backoff with max 5s
+                await new Promise(resolve => setTimeout(resolve, delay));
+                setRetryCount(attempt + 1);
+                fetchPlaceDetails(attempt + 1);
+              } else {
+                setPlaceDetails({ imageUrl: null });
+                setLoading(false);
+              }
+            } else if (status === google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
+              // Wait longer for rate limit errors
+              if (attempt < MAX_RETRIES - 1) {
+                const delay = Math.min(2000 * Math.pow(2, attempt), 10000); // Longer delay for rate limits
+                await new Promise(resolve => setTimeout(resolve, delay));
+                setRetryCount(attempt + 1);
+                fetchPlaceDetails(attempt + 1);
+              } else {
+                setPlaceDetails({ imageUrl: null });
+                setLoading(false);
+              }
+            } else {
+              setPlaceDetails({ imageUrl: null });
+              setLoading(false);
+            }
           }
-          setLoading(false);
         });
       } catch (error) {
         console.error('Error fetching place details:', error);
-        setPlaceDetails({ imageUrl: null });
-        setLoading(false);
+        if (attempt < MAX_RETRIES - 1) {
+          const delay = Math.min(1000 * Math.pow(2, attempt), 5000);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          setRetryCount(attempt + 1);
+          fetchPlaceDetails(attempt + 1);
+        } else {
+          setPlaceDetails({ imageUrl: null });
+          setLoading(false);
+        }
       }
     };
 
+    setLoading(true);
+    setRetryCount(0);
     fetchPlaceDetails();
   }, [activity, city, type]);
 

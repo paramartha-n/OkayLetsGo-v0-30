@@ -1,3 +1,12 @@
+V0.33
+- Itinerary: Activity Card
+  - Added auto retry mechanism to get images for activities from Google Places
+
+- Itinerary: Activity Card
+  - Added sticky day tab navigation
+  - Added next day button
+  - Autoscroll to top of the day when day changes
+
 V0.32
 - User input form: Origin City
   - Auto-detect nearest city with major airport and auto fills textbox

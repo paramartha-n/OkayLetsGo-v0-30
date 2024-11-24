@@ -1,8 +1,9 @@
 "use client";
 
+import * as React from "react";
 import { useEffect, useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 import { useTripContext } from "@/context/TripContext";
 import { generateItinerary } from "@/lib/gemini";
 import { FlightCard } from "./flight-card";
@@ -144,6 +145,18 @@ export default function Itinerary() {
   const [loading, setLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const flightSectionRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const scrollToTop = () => {
+    contentRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleDayChange = (day: number) => {
+    setCurrentDay(day);
+    scrollToTop();
+  };
+
+  const [currentDay, setCurrentDay] = useState(1);
 
   const fetchItineraryWithRetry = async (retryAttempt = 0): Promise<void> => {
     try {
@@ -256,38 +269,59 @@ export default function Itinerary() {
           </div>
         </Card>
       ) : parsedItinerary.length > 0 ? (
-        <div className="space-y-6">
-          {parsedItinerary.map(({ day, activities }, index) => (
-            <Card key={index} className="p-6">
-              <div className="space-y-6">
-                <h3 className="text-lg font-semibold">{day}</h3>
-                <div className="space-y-6">
-                  {activities.map((activity, actIndex) => (
-                    <>
-                      {actIndex > 0 && <Separator className="my-6" />}
-                      <ActivityCard 
-                        key={actIndex}
-                        activity={activity.name}
-                        description={activity.description}
-                        city={tripData.city}
-                        type={activity.type}
-                        duration={activity.duration}
-                        recommendedDish={activity.recommendedDish}
-                      />
-                    </>
-                  ))}
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <Card className="p-6">
-          <div className="text-center text-muted-foreground">
-            No itinerary content available. Please try again.
+        <div ref={contentRef} className="space-y-6">
+          <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+            <div className="flex overflow-x-auto py-2 px-4 gap-2 no-scrollbar">
+              {parsedItinerary.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleDayChange(index + 1)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap
+                    ${currentDay === index + 1
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted hover:bg-muted/80 text-muted-foreground"
+                    }`}
+                >
+                  Day {index + 1}
+                </button>
+              ))}
+            </div>
           </div>
-        </Card>
-      )}
+
+          <Card className="p-6">
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold">{parsedItinerary[currentDay - 1].day}</h3>
+              <div className="space-y-6">
+                {parsedItinerary[currentDay - 1].activities.map((activity, actIndex) => (
+                  <React.Fragment key={actIndex}>
+                    {actIndex > 0 && <Separator className="my-6" />}
+                    <ActivityCard 
+                      activity={activity.name}
+                      description={activity.description}
+                      city={tripData.city}
+                      type={activity.type}
+                      duration={activity.duration}
+                      recommendedDish={activity.recommendedDish}
+                    />
+                  </React.Fragment>
+                ))}
+              </div>
+
+              {currentDay < parsedItinerary.length && (
+                <div className="pt-6">
+                  <button
+                    onClick={() => handleDayChange(currentDay + 1)}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                  >
+                    Next Day
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </div>
+          </Card>
+        </div>
+      ) : null}
     </div>
   );
 }
