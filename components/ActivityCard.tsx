@@ -65,13 +65,14 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
             const place = results[0];
             
             // Try to get photo from the first result
-            let imageUrl = place.photos?.[0]?.getUrl({ maxWidth: 800, maxHeight: 600 }) || null;
+            let imageUrl = place.photos?.[0]?.getUrl?.({ maxWidth: 800, maxHeight: 600 }) || null;
             
             // If no photo in first result, try other results
             if (!imageUrl && results.length > 1) {
               for (let i = 1; i < results.length; i++) {
-                if (results[i].photos?.[0]) {
-                  imageUrl = results[i].photos[0].getUrl({ maxWidth: 800, maxHeight: 600 });
+                const photo = results[i]?.photos?.[0];
+                if (photo?.getUrl) {
+                  imageUrl = photo.getUrl({ maxWidth: 800, maxHeight: 600 });
                   break;
                 }
               }
@@ -80,8 +81,8 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
             setPlaceDetails({ 
               imageUrl,
               placeId: place.place_id,
-              latitude: place.geometry?.location?.lat(),
-              longitude: place.geometry?.location?.lng()
+              latitude: place.geometry?.location?.lat?.(),
+              longitude: place.geometry?.location?.lng?.()
             });
             setLoading(false);
           } else {

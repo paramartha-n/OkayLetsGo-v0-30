@@ -1,7 +1,11 @@
+V0.36
+- General: Build
+  - Build error fixed
+
 V0.35
 - Itinerary: Gemini
   - Boken down gemini prompts into 3 separate prompts, flight, hotel and itinerary
-  
+
 - Itinerary: Activity Card
   - Added entrance price of activity in local currency
 
