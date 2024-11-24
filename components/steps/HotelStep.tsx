@@ -1,0 +1,174 @@
+"use client";
+
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Hotel, Home, Building2, Tent, BedDouble, Building } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useTripContext } from "@/context/TripContext";
+import PlacesAutocomplete from "@/components/PlacesAutocomplete";
+
+const accommodations = [
+  {
+    id: "backpacker",
+    icon: <Tent className="w-4 h-4" />,
+    title: "Backpacker",
+    description: "Hostels and shared rooms",
+    price: "€5-€30",
+  },
+  {
+    id: "budget",
+    icon: <Home className="w-4 h-4" />,
+    title: "Budget",
+    description: "Basic hotels and guesthouses",
+    price: "€30-€80",
+  },
+  {
+    id: "standard",
+    icon: <BedDouble className="w-4 h-4" />,
+    title: "Standard",
+    description: "3-star hotels and apartments",
+    price: "€80-€130",
+  },
+  {
+    id: "comfort",
+    icon: <Building2 className="w-4 h-4" />,
+    title: "Comfort",
+    description: "4-star hotels with amenities",
+    price: "€130-€300",
+  },
+  {
+    id: "first-class",
+    icon: <Building className="w-4 h-4" />,
+    title: "First Class",
+    description: "Premium hotels and suites",
+    price: "€300-€500",
+  },
+  {
+    id: "luxury",
+    icon: <Hotel className="w-4 h-4" />,
+    title: "Luxury",
+    description: "5-star hotels and resorts",
+    price: "€500-€5000",
+  },
+];
+
+interface HotelStepProps {
+  onNext: () => void;
+}
+
+export default function HotelStep({ onNext }: HotelStepProps) {
+  const [hasCustomHotel, setHasCustomHotel] = useState(false);
+  const { tripData, updateTripData } = useTripContext();
+
+  const handleSelect = (value: string) => {
+    updateTripData('hotel', { type: value });
+    onNext();
+  };
+
+  const handleCustomHotelChange = (value: string) => {
+    updateTripData('hotel', { type: 'custom', customHotel: value });
+  };
+
+  const handleCustomHotelSubmit = () => {
+    if (tripData.hotel.customHotel?.trim()) {
+      onNext();
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="text-center mb-6">
+        <h2 className="text-xl font-semibold mb-2">Where would you like to stay?</h2>
+      </div>
+
+      {!hasCustomHotel ? (
+        <>
+          <div className="grid grid-cols-2 gap-4">
+            {accommodations.map((option) => (
+              <Card
+                key={option.id}
+                className={`cursor-pointer transition-all duration-200 ${
+                  tripData.hotel.type === option.id
+                    ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20"
+                    : "hover:bg-accent/50"
+                }`}
+                onClick={() => handleSelect(option.id)}
+              >
+                <CardContent className="p-4">
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center space-x-2">
+                        <div className={`p-2 rounded-full ${
+                          tripData.hotel.type === option.id
+                            ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400"
+                            : "bg-primary/10 text-primary"
+                        }`}>
+                          {option.icon}
+                        </div>
+                        <Label 
+                          className={`font-medium ${
+                            tripData.hotel.type === option.id
+                              ? "text-emerald-700 dark:text-emerald-400"
+                              : ""
+                          }`}
+                        >
+                          {option.title}
+                        </Label>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {option.description}
+                      </p>
+                      <div className={`inline-block px-2 py-1 mt-1 text-xs rounded-full ${
+                        tripData.hotel.type === option.id
+                          ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400"
+                          : "bg-accent text-muted-foreground"
+                      }`}>
+                        {option.price} per night
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <button
+            onClick={() => setHasCustomHotel(true)}
+            className="w-full text-center text-sm text-primary hover:underline mt-4"
+          >
+            I already have a hotel in mind
+          </button>
+        </>
+      ) : (
+        <div className="space-y-4">
+          <div className="flex space-x-4">
+            <div className="flex-1">
+              <PlacesAutocomplete
+                value={tripData.hotel.customHotel || ''}
+                onChange={handleCustomHotelChange}
+                onSelect={handleCustomHotelSubmit}
+                placeholder="Enter hotel name"
+                autoFocus={true}
+                types={['lodging']}
+                locationBias={tripData.city}
+              />
+            </div>
+            <Button 
+              onClick={handleCustomHotelSubmit}
+              disabled={!tripData.hotel.customHotel?.trim()}
+            >
+              Next
+            </Button>
+          </div>
+          <Button
+            variant="ghost"
+            className="text-sm text-primary hover:text-primary/80"
+            onClick={() => setHasCustomHotel(false)}
+          >
+            Back to hotel options
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
