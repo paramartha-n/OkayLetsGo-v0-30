@@ -73,7 +73,7 @@ export default function Home() {
   return (
     <TripProvider>
       <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-        <div className="max-w-2xl mx-auto px-4">
+        <div className="mx-auto px-4 w-full md:min-w-[960px] md:w-1/2 md:max-w-[1400px]">
           <div className="flex flex-col min-h-screen">
             <div className="flex justify-center space-x-2 py-4">
               {steps.map((step) => (

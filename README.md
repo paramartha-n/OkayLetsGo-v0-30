@@ -1,3 +1,7 @@
+V0.34
+- General: UX
+  - Scales to 50% of screen width for desktop
+
 V0.33
 - Itinerary: Activity Card
   - Added auto retry mechanism to get images for activities from Google Places
