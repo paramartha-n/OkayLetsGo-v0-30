@@ -1,3 +1,10 @@
+V0.35
+- Itinerary: Gemini
+  - Boken down gemini prompts into 3 separate prompts, flight, hotel and itinerary
+  
+- Itinerary: Activity Card
+  - Added entrance price of activity in local currency
+
 V0.34
 - General: UX
   - Scales to 50% of screen width for desktop

@@ -51,6 +51,7 @@ interface Activity {
   name: string;
   description: string;
   duration?: string;
+  price?: string;
   recommendedDish?: {
     name: string;
     description: string;
@@ -110,6 +111,8 @@ function parseItineraryContent(content: string): DayActivities[] {
           };
         } else if (line.startsWith('Duration:') && currentActivity) {
           currentActivity.duration = line.replace('Duration:', '').trim();
+        } else if (line.startsWith('Price:') && currentActivity) {
+          currentActivity.price = line.replace('Price:', '').trim();
         } else if (line.startsWith('Description:') && currentActivity) {
           currentActivity.description = line.replace('Description:', '').trim();
         } else if (line.startsWith('Recommended Dish:') && currentActivity && 
@@ -301,6 +304,7 @@ export default function Itinerary() {
                       city={tripData.city}
                       type={activity.type}
                       duration={activity.duration}
+                      price={activity.price}
                       recommendedDish={activity.recommendedDish}
                     />
                   </React.Fragment>

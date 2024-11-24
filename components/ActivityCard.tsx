@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin, Clock } from "lucide-react";
+import { MapPin, Clock, Ticket } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,7 @@ interface ActivityCardProps {
   city: string;
   type?: 'activity' | 'lunch' | 'dinner';
   duration?: string;
+  price?: string;
   recommendedDish?: {
     name: string;
     description: string;
@@ -26,7 +27,7 @@ interface PlaceDetails {
   longitude?: number;
 }
 
-export function ActivityCard({ activity, description, city, type = 'activity', duration, recommendedDish }: ActivityCardProps) {
+export function ActivityCard({ activity, description, city, type = 'activity', duration, price, recommendedDish }: ActivityCardProps) {
   const [placeDetails, setPlaceDetails] = useState<PlaceDetails>({ imageUrl: null });
   const [loading, setLoading] = useState(true);
   const [retryCount, setRetryCount] = useState(0);
@@ -210,9 +211,18 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
                 View on Maps
               </Button>
               {type === 'activity' && duration && (
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <Clock className="w-3.5 h-3.5" />
-                  {duration}
+                <div className="flex items-center space-x-2 text-sm">
+                  <Clock className="w-4 h-4 text-primary" />
+                  <span>{duration}</span>
+                  {price && (
+                    <>
+                      <span className="mx-1">•</span>
+                      <div className="flex items-center space-x-1">
+                        <Ticket className="w-4 h-4 text-primary" />
+                        <span>{price}</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>
