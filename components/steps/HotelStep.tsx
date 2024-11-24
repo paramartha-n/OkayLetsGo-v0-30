@@ -90,8 +90,8 @@ export default function HotelStep({ onNext }: HotelStepProps) {
                 key={option.id}
                 className={`cursor-pointer transition-all duration-200 ${
                   tripData.hotel.type === option.id
-                    ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20"
-                    : "hover:bg-accent/50"
+                    ? "border-traveloka-primary bg-traveloka-primary/5 dark:bg-traveloka-primary/10"
+                    : "hover:bg-traveloka-primary/5"
                 }`}
                 onClick={() => handleSelect(option.id)}
               >
@@ -101,15 +101,15 @@ export default function HotelStep({ onNext }: HotelStepProps) {
                       <div className="flex items-center space-x-2">
                         <div className={`p-2 rounded-full ${
                           tripData.hotel.type === option.id
-                            ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400"
-                            : "bg-primary/10 text-primary"
+                            ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
+                            : "bg-traveloka-primary/10 text-traveloka-primary"
                         }`}>
                           {option.icon}
                         </div>
                         <Label 
                           className={`font-medium ${
                             tripData.hotel.type === option.id
-                              ? "text-emerald-700 dark:text-emerald-400"
+                              ? "text-traveloka-primary"
                               : ""
                           }`}
                         >
@@ -121,8 +121,8 @@ export default function HotelStep({ onNext }: HotelStepProps) {
                       </p>
                       <div className={`inline-block px-2 py-1 mt-1 text-xs rounded-full ${
                         tripData.hotel.type === option.id
-                          ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400"
-                          : "bg-accent text-muted-foreground"
+                          ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
+                          : "bg-traveloka-primary/10 text-traveloka-primary"
                       }`}>
                         {option.price} per night
                       </div>
@@ -134,7 +134,7 @@ export default function HotelStep({ onNext }: HotelStepProps) {
           </div>
           <button
             onClick={() => setHasCustomHotel(true)}
-            className="w-full text-center text-sm text-primary hover:underline mt-4"
+            className="w-full text-center text-sm text-traveloka-primary hover:underline mt-4"
           >
             I already have a hotel in mind
           </button>
@@ -156,13 +156,14 @@ export default function HotelStep({ onNext }: HotelStepProps) {
             <Button 
               onClick={handleCustomHotelSubmit}
               disabled={!tripData.hotel.customHotel?.trim()}
+              className="w-[30%]"
             >
               Next
             </Button>
           </div>
           <Button
             variant="ghost"
-            className="text-sm text-primary hover:text-primary/80"
+            className="text-sm text-traveloka-primary hover:text-traveloka-primary/80"
             onClick={() => setHasCustomHotel(false)}
           >
             Back to hotel options

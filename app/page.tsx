@@ -32,8 +32,8 @@ const steps = [
   { id: 5, title: "Transport", component: TransportStep },
   { id: 6, title: "Activities", component: ActivityStep },
   { id: 7, title: "Restaurants", component: RestaurantStep },
-  { id: 8, title: "Preferences", component: PreferencesStep },
-  { id: 9, title: "Budget", component: BudgetStep },
+  { id: 8, title: "Budget", component: BudgetStep },
+  { id: 9, title: "Preferences", component: PreferencesStep },
   { id: 10, title: "Summary", component: SummaryStep },
 ];
 
@@ -124,11 +124,12 @@ export default function Home() {
                           <Button
                             variant="outline"
                             onClick={handlePrevious}
+                            className="w-[30%]"
                           >
                             <ChevronLeft className="w-4 h-4 mr-2" />
                             Previous
                           </Button>
-                          <Button onClick={handleNext}>
+                          <Button onClick={handleNext} className="w-[30%]">
                             Next
                             <ChevronRight className="w-4 h-4 ml-2" />
                           </Button>
@@ -140,6 +141,7 @@ export default function Home() {
                           <Button
                             variant="outline"
                             onClick={handlePrevious}
+                            className="w-[30%]"
                           >
                             <ChevronLeft className="w-4 h-4 mr-2" />
                             Previous

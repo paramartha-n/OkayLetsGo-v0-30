@@ -63,8 +63,8 @@ export default function TransportStep({ onNext }: TransportStepProps) {
             key={transport.id}
             className={`cursor-pointer transition-all duration-200 ${
               tripData.transport.includes(transport.id)
-                ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20"
-                : "hover:bg-accent/50"
+                ? "border-traveloka-primary bg-traveloka-primary/5 dark:bg-traveloka-primary/10"
+                : "hover:bg-traveloka-primary/5"
             }`}
             onClick={() => toggleTransport(transport.id)}
           >
@@ -74,15 +74,15 @@ export default function TransportStep({ onNext }: TransportStepProps) {
                   <div className="flex items-center space-x-2">
                     <div className={`p-2 rounded-full ${
                       tripData.transport.includes(transport.id)
-                        ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400"
-                        : "bg-primary/10 text-primary"
+                        ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
+                        : "bg-traveloka-primary/10 text-traveloka-primary"
                     }`}>
                       {transport.icon}
                     </div>
                     <Label 
                       className={`font-medium ${
                         tripData.transport.includes(transport.id)
-                          ? "text-emerald-700 dark:text-emerald-400"
+                          ? "text-traveloka-primary"
                           : ""
                       }`}
                     >
@@ -94,8 +94,8 @@ export default function TransportStep({ onNext }: TransportStepProps) {
                   </p>
                   <div className={`inline-block px-2 py-1 mt-1 text-xs rounded-full ${
                     tripData.transport.includes(transport.id)
-                      ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400"
-                      : "bg-accent text-muted-foreground"
+                      ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
+                      : "bg-traveloka-primary/10 text-traveloka-primary"
                   }`}>
                     {transport.typical}
                   </div>

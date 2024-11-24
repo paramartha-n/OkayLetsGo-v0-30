@@ -66,20 +66,22 @@ export default function CurrencySelector() {
   };
 
   return (
-    <Select value={tripData.currency} onValueChange={handleCurrencyChange}>
-      <SelectTrigger className="w-fit min-w-[100px]">
-        <SelectValue placeholder="Select currency" />
-      </SelectTrigger>
-      <SelectContent>
-        {commonCurrencies.map((currency) => (
-          <SelectItem key={currency.code} value={currency.code}>
-            <span className="flex items-center">
-              <span className="w-8">{currency.symbol}</span>
-              <span>{currency.code}</span>
-            </span>
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="flex justify-end">
+      <Select
+        value={tripData.currency}
+        onValueChange={(value) => handleCurrencyChange(value)}
+      >
+        <SelectTrigger className="w-fit min-w-[120px] text-xs">
+          <SelectValue placeholder="Select currency" />
+        </SelectTrigger>
+        <SelectContent className="text-xs">
+          {commonCurrencies.map((currency) => (
+            <SelectItem key={currency.code} value={currency.code}>
+              {currency.symbol} {currency.code} - {currency.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }

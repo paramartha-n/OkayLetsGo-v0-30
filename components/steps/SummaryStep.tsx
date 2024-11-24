@@ -14,6 +14,7 @@ import {
   Wallet,
   Pencil,
   Plane,
+  Luggage
 } from "lucide-react";
 import { useTripContext } from "@/context/TripContext";
 
@@ -140,18 +141,18 @@ const summaryItems = [
     )
   },
   {
-    id: 'preferences',
-    icon: <Heart className="w-4 h-4" />,
-    title: 'Special Requests',
-    step: 8,
-    getValue: (tripData: any) => tripData.preferences || 'Not specified'
-  },
-  {
     id: 'budget',
     icon: <Wallet className="w-4 h-4" />,
     title: 'Budget',
-    step: 9,
+    step: 8,
     getValue: (tripData: any) => tripData.budget || 'Not specified'
+  },
+  {
+    id: 'preferences',
+    icon: <Heart className="w-4 h-4" />,
+    title: 'Special Requests',
+    step: 9,
+    getValue: (tripData: any) => tripData.preferences || 'Not specified'
   }
 ];
 
@@ -198,12 +199,13 @@ export default function SummaryStep({ onEdit, onCreateItinerary }: SummaryStepPr
         ))}
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center w-full">
         <Button 
           size="lg"
           onClick={handleCreateItinerary}
-          className="bg-primary text-primary-foreground hover:bg-primary/90"
+          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center gap-2"
         >
+          <Luggage className="w-5 h-5" />
           Create Itinerary
         </Button>
       </div>

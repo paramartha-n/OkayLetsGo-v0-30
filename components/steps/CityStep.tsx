@@ -47,6 +47,7 @@ export default function CityStep({ onNext, isFirstStep }: CityStepProps) {
         <Button 
           onClick={handleNext}
           disabled={!tripData.city.trim()}
+          className="w-[30%]"
         >
           Next
           <ChevronRight className="w-4 h-4 ml-2" />

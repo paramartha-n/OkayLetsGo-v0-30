@@ -20,6 +20,34 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
+        traveloka: {
+          primary: '#0064D2',    // Traveloka's main blue
+          secondary: '#35405A',  // Dark blue/grey
+          accent: '#00B6B6',     // Teal accent (replacing orange)
+          success: '#00AA13',    // Green for success states
+          warning: '#00B6B6',    // Teal for warnings (replacing orange)
+          error: '#E12D2D',      // Red for errors
+          gray: {
+            50: '#F6F7F8',
+            100: '#E6E8EA',
+            200: '#C1C4C9',
+            300: '#989CA3',
+            400: '#6B717A',
+            500: '#35405A',
+          },
+          teal: {
+            50: '#E6F7F7',
+            100: '#B3EBEB',
+            200: '#80DFDF',
+            300: '#4DD3D3',
+            400: '#26C7C7',
+            500: '#00B6B6',
+            600: '#009999',
+            700: '#007A7A',
+            800: '#005C5C',
+            900: '#003D3D'
+          }
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

@@ -1,3 +1,10 @@
+V0.40
+- User input form: UX
+  - Updated tailwind color scheme
+  - Resized and recolored navigation buttons
+  - Removed autofocus from PreferenceStep
+  - Swap order of PreferenceStep with BudgetStep
+
 V0.39
 - Itinerary: Restaurant Card
   - Added creteria for Rating Above 4.0 and 1,000+ reviews
