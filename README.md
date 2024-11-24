@@ -1,3 +1,7 @@
+V0.41
+- Itinerary: Activity Card
+  - Faster and stable itinerary generation
+
 V0.40
 - User input form: UX
   - Updated tailwind color scheme

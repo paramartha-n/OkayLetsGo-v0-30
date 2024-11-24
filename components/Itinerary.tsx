@@ -83,59 +83,105 @@ const getHotelTypeDescription = (type: string): { title: string; priceRange: { m
 };
 
 function parseItineraryContent(content: string): DayActivities[] {
-  const days = content.split(/Day \d+:/);
-  return days
-    .slice(1)
-    .map((day, index) => {
-      const lines = day
-        .split('\n')
-        .map(line => line.trim())
-        .filter(line => line && !line.includes('Day'));
+  // Return empty array for error messages or invalid content
+  if (!content || 
+      content.includes("trouble creating") || 
+      content.includes("Unable to generate") || 
+      content.includes("Sorry, we couldn't generate")) {
+    return [];
+  }
 
-      const activities: Activity[] = [];
-      let currentActivity: Partial<Activity> | null = null;
+  // Split content into days, keeping the "Day X:" prefix
+  const days = content.split(/(?=Day \d+:)/).filter(Boolean);
+  if (!days.length) return [];
 
-      for (const line of lines) {
-        if (line.startsWith('Morning Activity:') || line.startsWith('Afternoon Activity:') || 
-            line.startsWith('Lunch:') || line.startsWith('Dinner:')) {
-          if (currentActivity?.name && currentActivity.type) {
-            activities.push(currentActivity as Activity);
+  return days.map((dayContent) => {
+    const activities: Activity[] = [];
+    
+    // Helper function to extract activity details
+    const extractActivity = (type: 'activity' | 'lunch' | 'dinner', startMarker: string) => {
+      try {
+        const activityMatch = dayContent.match(new RegExp(`${startMarker}([^]*?)(?=(?:Lunch:|Afternoon Activity:|Dinner:|$))`));
+        if (!activityMatch) return null;
+
+        const activityContent = activityMatch[1].trim();
+        const lines = activityContent.split('\n').map(line => line.trim());
+        
+        if (type === 'activity') {
+          // For activities, get the first line as name (excluding "Morning Activity:" or "Afternoon Activity:")
+          const name = lines[0].replace(/^(Morning Activity:|Afternoon Activity:)/, '').trim();
+          const duration = lines.find(l => l.startsWith('Duration:'))?.replace('Duration:', '').trim();
+          const price = lines.find(l => l.startsWith('Price:'))?.replace('Price:', '').trim();
+          const description = lines.find(l => l.startsWith('Description:'))?.replace('Description:', '').trim();
+
+          if (name) {
+            return {
+              type,
+              name,
+              duration,
+              price,
+              description: description || ''
+            };
           }
-          const [type, name] = line.split(': ');
-          currentActivity = {
-            type: type.toLowerCase().includes('activity') ? 'activity' : 
-                  type.toLowerCase().includes('lunch') ? 'lunch' : 'dinner',
-            name,
-            description: '',
-            duration: ''
-          };
-        } else if (line.startsWith('Duration:') && currentActivity) {
-          currentActivity.duration = line.replace('Duration:', '').trim();
-        } else if (line.startsWith('Price:') && currentActivity) {
-          currentActivity.price = line.replace('Price:', '').trim();
-        } else if (line.startsWith('Description:') && currentActivity) {
-          currentActivity.description = line.replace('Description:', '').trim();
-        } else if (line.startsWith('Recommended Dish:') && currentActivity && 
-                  (currentActivity.type === 'lunch' || currentActivity.type === 'dinner')) {
-          const dishContent = line.replace('Recommended Dish:', '').trim();
-          const [dishName, dishDescription] = dishContent.split(' - ');
-          currentActivity.recommendedDish = {
-            name: dishName.trim(),
-            description: dishDescription.trim()
-          };
+        } else {
+          // For restaurants (lunch/dinner)
+          const name = lines[0].replace(/^(Lunch:|Dinner:)/, '').trim();
+          const description = lines.find(l => l.startsWith('Description:'))?.replace('Description:', '').trim();
+          const recommendedDishLine = lines.find(l => l.startsWith('Recommended Dish:'));
+          
+          if (name) {
+            const activity: Activity = {
+              type,
+              name,
+              description: description || ''
+            };
+
+            if (recommendedDishLine) {
+              const dishContent = recommendedDishLine.replace('Recommended Dish:', '').trim();
+              const dashIndex = dishContent.indexOf('-');
+              if (dashIndex !== -1) {
+                activity.recommendedDish = {
+                  name: dishContent.slice(0, dashIndex).trim(),
+                  description: dishContent.slice(dashIndex + 1).trim()
+                };
+              }
+            }
+
+            return activity;
+          }
         }
+        return null;
+      } catch (error) {
+        console.error(`Error parsing ${type}:`, error);
+        return null;
       }
+    };
 
-      if (currentActivity?.name && currentActivity.type) {
-        activities.push(currentActivity as Activity);
-      }
+    // Extract morning activity
+    const morningActivity = extractActivity('activity', 'Morning Activity:');
+    if (morningActivity) activities.push(morningActivity);
 
-      return {
-        day: `Day ${index + 1}`,
-        activities
-      };
-    })
-    .filter(day => day.activities.length > 0);
+    // Extract lunch
+    const lunch = extractActivity('lunch', 'Lunch:');
+    if (lunch) activities.push(lunch);
+
+    // Extract afternoon activity
+    const afternoonActivity = extractActivity('activity', 'Afternoon Activity:');
+    if (afternoonActivity) activities.push(afternoonActivity);
+
+    // Extract dinner
+    const dinner = extractActivity('dinner', 'Dinner:');
+    if (dinner) activities.push(dinner);
+
+    // Get day number from the content
+    const dayMatch = dayContent.match(/Day (\d+):/);
+    const dayNumber = dayMatch ? parseInt(dayMatch[1]) : activities.length;
+
+    return {
+      day: `Day ${dayNumber}`,
+      activities: activities.filter(Boolean)
+    };
+  }).filter(day => day.activities.length > 0);
 }
 
 const MAX_RETRIES = 3;
@@ -271,59 +317,70 @@ export default function Itinerary() {
             </span>
           </div>
         </Card>
-      ) : parsedItinerary.length > 0 ? (
+      ) : itineraryContent ? (
         <div ref={contentRef} className="space-y-6">
-          <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-            <div className="flex overflow-x-auto py-2 px-4 gap-2 no-scrollbar">
-              {parsedItinerary.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleDayChange(index + 1)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap
-                    ${currentDay === index + 1
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted hover:bg-muted/80 text-muted-foreground"
-                    }`}
-                >
-                  Day {index + 1}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <Card className="p-6">
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold">{parsedItinerary[currentDay - 1].day}</h3>
-              <div className="space-y-6">
-                {parsedItinerary[currentDay - 1].activities.map((activity, actIndex) => (
-                  <React.Fragment key={actIndex}>
-                    {actIndex > 0 && <Separator className="my-6" />}
-                    <ActivityCard 
-                      activity={activity.name}
-                      description={activity.description}
-                      city={tripData.city}
-                      type={activity.type}
-                      duration={activity.duration}
-                      price={activity.price}
-                      recommendedDish={activity.recommendedDish}
-                    />
-                  </React.Fragment>
-                ))}
+          {parsedItinerary.length > 0 ? (
+            <>
+              <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+                <div className="flex overflow-x-auto py-2 px-4 gap-2 no-scrollbar">
+                  {parsedItinerary.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleDayChange(index + 1)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap
+                        ${currentDay === index + 1
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted hover:bg-muted/80 text-muted-foreground"
+                        }`}
+                    >
+                      Day {index + 1}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              {currentDay < parsedItinerary.length && (
-                <div className="pt-6">
-                  <button
-                    onClick={() => handleDayChange(currentDay + 1)}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-                  >
-                    Next Day
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+              <Card className="p-6">
+                <div className="space-y-6">
+                  <h3 className="text-lg font-semibold">{parsedItinerary[currentDay - 1].day}</h3>
+                  <div className="space-y-6">
+                    {parsedItinerary[currentDay - 1].activities.map((activity, actIndex) => (
+                      <React.Fragment key={actIndex}>
+                        {actIndex > 0 && <Separator className="my-6" />}
+                        <ActivityCard 
+                          activity={activity.name}
+                          description={activity.description}
+                          city={tripData.city}
+                          type={activity.type}
+                          duration={activity.duration}
+                          price={activity.price}
+                          recommendedDish={activity.recommendedDish}
+                        />
+                      </React.Fragment>
+                    ))}
+                  </div>
+
+                  {currentDay < parsedItinerary.length && (
+                    <div className="pt-6">
+                      <button
+                        onClick={() => handleDayChange(currentDay + 1)}
+                        className="w-full inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                      >
+                        Next Day
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </Card>
+              </Card>
+            </>
+          ) : (
+            <Card className="p-6">
+              <div className="text-center py-8 text-muted-foreground">
+                <p>We encountered an issue while generating your itinerary.</p>
+                <p className="mt-2">Please try again or adjust your preferences.</p>
+              </div>
+            </Card>
+          )}
         </div>
       ) : null}
     </div>

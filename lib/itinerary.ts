@@ -47,65 +47,98 @@ export async function generateItinerary(tripData: any) {
   );
 
   const prompt = `
-    Create a ${numberOfDays}-day itinerary for ${tripData.city}. Include activities based on these preferences:
-    - Activities: ${tripData.activities.join(", ")}
-    - Dining: ${tripData.restaurants.join(", ")}
-    - Special requests: ${tripData.preferences}
+Create a ${numberOfDays}-day itinerary for ${tripData.city}. Include activities based on these preferences:
+- Activities: ${tripData.activities.join(", ")}
+- Dining: ${tripData.restaurants.join(", ")}
+- Special requests: ${tripData.preferences}
 
-    Format the response exactly like this example:
+For each day, follow this EXACT format:
 
-    Day 1:
-    Morning Activity: Eiffel Tower
-    Duration: 2 hours
-    Price: €26.10
-    Description: Iconic symbol of Paris, offering breathtaking city views. Best visited early morning to avoid crowds. Features three levels with observation decks and restaurants.
-    Lunch: Le Chateaubriand Restaurant
-    Description: Modern French bistro with innovative cuisine. Known for its creative tasting menus and intimate atmosphere. Michelin-starred dining experience.
-    Recommended Dish: Aged Beef Tartare - Prepared with smoked eel and horseradish cream, this signature dish perfectly represents the restaurant's innovative approach to French cuisine.
-    Afternoon Activity: Luxembourg Gardens
-    Duration: 1.5 hours
-    Price: Free
-    Description: Historic park with French and English gardens. Perfect for relaxation with fountains and statues. Home to the Luxembourg Palace and various art exhibitions.
-    Dinner: L'Ami Louis
-    Description: Classic Parisian bistro famous for its roast chicken. Rustic atmosphere with traditional French service. Popular among locals and celebrities alike.
-    Recommended Dish: Roast Chicken - Perfectly roasted with garlic and herbs, served with their legendary pommes frites. A timeless classic that made this restaurant world-famous.
+Day 1:
+Morning Activity: [Name of Activity]
+Duration: [Duration in hours]
+Price: [Price in EUR or "Free"]
+Description: [2-3 sentences about the place]
 
-    Important:
-    - Include a 2-3 sentence description for each place
-    - Keep descriptions informative but concise
-    - Focus on unique features and what makes each place special
-    - Include practical tips where relevant
-    - Exactly 2 activities per day
-    - Exactly 2 restaurants per day (lunch and dinner)
-    - For restaurants, include a "Recommended Dish" line with the dish name followed by a dash and its description
-    - Only recommend restaurants with Google ratings of 4.0 or higher, and with over 1,000 reviews
-    - For activities (not restaurants), include:
-      * "Duration:" line with estimated visit time in hours
-      * "Price:" line with entrance fee in local currency (use "Free" if no entrance fee)
-    - Start each day with "Day X:"
-    - Label each line as shown in the example
-  `;
+Lunch: [Restaurant Name]
+Description: [2-3 sentences about the restaurant]
+Recommended Dish: [Dish Name] - [Brief description of the dish]
 
-  try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const content = response.text().trim();
+Afternoon Activity: [Name of Activity]
+Duration: [Duration in hours]
+Price: [Price in EUR or "Free"]
+Description: [2-3 sentences about the place]
 
-    return {
-      flights: {
-        ...flightData,
-        hotel: hotelData
-      },
-      content: content || "Unable to generate itinerary content. Please try again."
-    };
-  } catch (error) {
-    console.error("Error generating itinerary:", error);
-    return {
-      flights: {
-        ...flightData,
-        hotel: hotelData
-      },
-      content: "Sorry, we couldn't generate your itinerary at this time. Please try again later."
-    };
+Dinner: [Restaurant Name]
+Description: [2-3 sentences about the restaurant]
+Recommended Dish: [Dish Name] - [Brief description of the dish]
+
+[Repeat this format for each day]
+
+Important formatting rules:
+1. Always include ALL fields (Morning Activity, Duration, Price, Description, etc.)
+2. Always include the dash (-) between dish name and description
+3. Keep descriptions informative but concise
+4. Use exact labels: "Morning Activity:", "Duration:", "Price:", etc.
+5. For restaurants, always include a recommended dish
+6. For activities, always specify duration and price
+7. Use proper line breaks between sections
+`;
+
+  let retryCount = 0;
+  const maxRetries = 3;
+  const retryDelay = 3000; // 3 seconds
+
+  while (retryCount < maxRetries) {
+    try {
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const content = response.text().trim();
+
+      // Basic validation: check if the content has days and some key required fields
+      if (content.includes("Day 1:") && 
+          content.includes("Morning Activity:") && 
+          content.includes("Duration:") &&
+          content.includes("Price:") &&
+          content.includes("Description:") &&
+          content.includes("Recommended Dish:")) {
+        return {
+          flights: {
+            ...flightData,
+            hotel: hotelData
+          },
+          content: content
+        };
+      }
+
+      // If validation fails, throw error to trigger retry
+      throw new Error("Generated content did not match required format");
+    } catch (error) {
+      console.error(`Attempt ${retryCount + 1} failed:`, error);
+      retryCount++;
+      
+      if (retryCount < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, retryDelay));
+        continue;
+      }
+      
+      // If all retries fail, return a more helpful error message
+      return {
+        flights: {
+          ...flightData,
+          hotel: hotelData
+        },
+        content: "We're having trouble creating your perfect itinerary right now. Please try again in a few moments."
+      };
+    }
   }
+
+  // Fallback return in case of unexpected loop exit
+  return {
+    flights: {
+      ...flightData,
+      hotel: hotelData
+    },
+    content: "Unable to generate itinerary. Please try again."
+  };
 }
