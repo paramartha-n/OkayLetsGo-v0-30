@@ -1,3 +1,7 @@
+V0.31
+- Itinerary: Activity Card - Restaurant
+  - Added must try dishes with description
+
 V0.30
 - Itinerary: Activity Card
   - Added horizontal separator between activities

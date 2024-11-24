@@ -13,6 +13,10 @@ interface ActivityCardProps {
   city: string;
   type?: 'activity' | 'lunch' | 'dinner';
   duration?: string;
+  recommendedDish?: {
+    name: string;
+    description: string;
+  };
 }
 
 interface PlaceDetails {
@@ -22,7 +26,7 @@ interface PlaceDetails {
   longitude?: number;
 }
 
-export function ActivityCard({ activity, description, city, type = 'activity', duration }: ActivityCardProps) {
+export function ActivityCard({ activity, description, city, type = 'activity', duration, recommendedDish }: ActivityCardProps) {
   const [placeDetails, setPlaceDetails] = useState<PlaceDetails>({ imageUrl: null });
   const [loading, setLoading] = useState(true);
 
@@ -170,9 +174,20 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
             <Skeleton className="h-4 w-3/4" />
           </div>
         ) : (
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {description}
-          </p>
+          <div className="space-y-2">
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              {description}
+            </p>
+            {(type === 'lunch' || type === 'dinner') && recommendedDish && (
+              <div className="mt-3">
+                <p className="text-sm font-bold text-orange-500">Must-Try Dish:</p>
+                <p className="text-sm mt-1">
+                  <span className="font-medium">{recommendedDish.name}</span>
+                  <span className="text-muted-foreground"> - {recommendedDish.description}</span>
+                </p>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

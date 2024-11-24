@@ -49,7 +49,11 @@ interface Activity {
   type: 'activity' | 'lunch' | 'dinner';
   name: string;
   description: string;
-  duration: string;
+  duration?: string;
+  recommendedDish?: {
+    name: string;
+    description: string;
+  };
 }
 
 interface DayActivities {
@@ -107,6 +111,14 @@ function parseItineraryContent(content: string): DayActivities[] {
           currentActivity.duration = line.replace('Duration:', '').trim();
         } else if (line.startsWith('Description:') && currentActivity) {
           currentActivity.description = line.replace('Description:', '').trim();
+        } else if (line.startsWith('Recommended Dish:') && currentActivity && 
+                  (currentActivity.type === 'lunch' || currentActivity.type === 'dinner')) {
+          const dishContent = line.replace('Recommended Dish:', '').trim();
+          const [dishName, dishDescription] = dishContent.split(' - ');
+          currentActivity.recommendedDish = {
+            name: dishName.trim(),
+            description: dishDescription.trim()
+          };
         }
       }
 
@@ -260,6 +272,7 @@ export default function Itinerary() {
                         city={tripData.city}
                         type={activity.type}
                         duration={activity.duration}
+                        recommendedDish={activity.recommendedDish}
                       />
                     </>
                   ))}
