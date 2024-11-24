@@ -1,3 +1,13 @@
+V0.37
+- Itinerary: Activity Card
+  - View Map button aligned to right
+  - Labels moved to above title and color added
+  - Column layout ratio updated to 47.5% and 52.5%
+
+- Itinerary: Restaurant Card
+  - Added rating
+  - Added average meal price
+
 V0.36
 - General: Build
   - Build error fixed

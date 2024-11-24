@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin, Clock, Ticket } from "lucide-react";
+import { MapPin, Clock, Ticket, Star, Utensils } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +25,25 @@ interface PlaceDetails {
   placeId?: string;
   latitude?: number;
   longitude?: number;
+  rating?: number;
+  priceLevel?: number;
+}
+
+function getPriceRange(priceLevel: number): string {
+  switch (priceLevel) {
+    case 0:
+      return "Under $10";
+    case 1:
+      return "$10-30";
+    case 2:
+      return "$30-60";
+    case 3:
+      return "$60-100";
+    case 4:
+      return "$100+";
+    default:
+      return "Price N/A";
+  }
 }
 
 export function ActivityCard({ activity, description, city, type = 'activity', duration, price, recommendedDish }: ActivityCardProps) {
@@ -82,7 +101,9 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
               imageUrl,
               placeId: place.place_id,
               latitude: place.geometry?.location?.lat?.(),
-              longitude: place.geometry?.location?.lng?.()
+              longitude: place.geometry?.location?.lng?.(),
+              rating: place.rating,
+              priceLevel: place.price_level
             });
             setLoading(false);
           } else {
@@ -178,7 +199,7 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
 
   return (
     <div className="flex flex-col md:flex-row items-start gap-6">
-      <div className="w-full md:w-[40%] flex-shrink-0">
+      <div className="w-full md:w-[47.5%] flex-shrink-0">
         {loading ? (
           <Skeleton className="w-full h-[240px] rounded-md" />
         ) : (
@@ -197,20 +218,32 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
           </AspectRatio>
         )}
       </div>
-      <div className="flex-1 min-w-0 py-2 w-full">
-        <div className="flex items-start justify-between mb-3 flex-wrap gap-2">
-          <div className="space-y-1.5">
-            <h4 className="text-lg font-medium">{activity}</h4>
-            <div className="flex flex-wrap items-center gap-3">
+      <div className="flex-1 min-w-0 py-2 w-full md:w-[52.5%]">
+        <div className="flex items-start justify-between mb-3">
+          <div className="space-y-1.5 flex-1">
+            <div className="flex justify-between items-start gap-3">
+              <Badge 
+                variant="secondary" 
+                className={`flex items-center justify-center w-[104px] px-3 py-1 ${
+                  type === 'activity' 
+                    ? 'bg-teal-500 hover:bg-teal-500 text-white'
+                    : 'bg-blue-600 hover:bg-blue-600 text-white'
+                }`}
+              >
+                <span>{getTypeLabel()}</span>
+              </Badge>
               <Button
                 variant="outline"
                 size="sm"
-                className="h-8 text-sm text-muted-foreground hover:text-primary flex items-center gap-1.5"
+                className="h-8 text-sm text-muted-foreground hover:text-primary flex items-center gap-1.5 shrink-0"
                 onClick={handleLocationClick}
               >
                 <MapPin className="w-3.5 h-3.5" />
                 View on Maps
               </Button>
+            </div>
+            <h4 className="text-lg font-medium">{activity}</h4>
+            <div className="flex flex-wrap items-center gap-3">
               {type === 'activity' && duration && (
                 <div className="flex items-center space-x-2 text-sm">
                   <Clock className="w-4 h-4 text-primary" />
@@ -226,16 +259,23 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
                   )}
                 </div>
               )}
+              {(type === 'lunch' || type === 'dinner') && placeDetails.rating && (
+                <div className="flex items-center text-sm">
+                  <Star className="w-4 h-4 mr-1 fill-yellow-500" />
+                  <span className="text-foreground">{placeDetails.rating.toFixed(1)}</span>
+                  {placeDetails.priceLevel !== undefined && (
+                    <>
+                      <span className="mx-2">•</span>
+                      <Utensils className="w-4 h-4 mr-1" />
+                      <span className="text-foreground">
+                        {getPriceRange(placeDetails.priceLevel)}
+                      </span>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
-          <Badge 
-            variant="secondary" 
-            className={`flex items-center w-fit gap-1.5 px-3 py-1 ${
-              type === 'lunch' || type === 'dinner' ? 'bg-primary/10 text-primary' : ''
-            }`}
-          >
-            <span>{getTypeLabel()}</span>
-          </Badge>
         </div>
         {loading ? (
           <div className="space-y-2">
