@@ -23,6 +23,11 @@ export default function CityStep({ onNext, isFirstStep }: CityStepProps) {
     }
   };
 
+  const handleSelect = () => {
+    // When a place is selected from autocomplete, advance immediately
+    onNext();
+  };
+
   return (
     <div className="space-y-4">
       <div className="text-center mb-6">
@@ -34,7 +39,7 @@ export default function CityStep({ onNext, isFirstStep }: CityStepProps) {
           <PlacesAutocomplete
             value={tripData.city}
             onChange={handleCityChange}
-            onSelect={handleNext}
+            onSelect={handleSelect}
             placeholder="Enter a city name"
             autoFocus={true}
           />

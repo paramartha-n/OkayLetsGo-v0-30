@@ -39,9 +39,12 @@ export default function PlacesAutocomplete({
 
       autocompleteRef.current.addListener('place_changed', () => {
         const place = autocompleteRef.current?.getPlace();
-        if (place?.name) {
-          onChange(place.name);
-          onSelect?.();
+        if (place?.name || place?.formatted_address) {
+          onChange(place.name || place.formatted_address || '');
+          if (onSelect) {
+            // Add a small delay to ensure the value is updated before advancing
+            setTimeout(onSelect, 100);
+          }
         }
       });
     }

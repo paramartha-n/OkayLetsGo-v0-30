@@ -1,3 +1,10 @@
+V0.32
+- User input form: Origin City
+  - Auto-detect nearest city with major airport and auto fills textbox
+
+- User input form: City
+  - Fixed auto advance when selecting city from autocomplete list
+
 V0.31
 - Itinerary: Activity Card - Restaurant
   - Added must try dishes with description
