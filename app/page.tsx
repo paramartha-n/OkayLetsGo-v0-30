@@ -85,9 +85,6 @@ export default function Home() {
               <AccordionItem value="step-form" className="border-none">
                 <AccordionTrigger className="py-4 w-full">
                   <div className="flex flex-col w-full gap-3">
-                    <span className="text-base font-medium">
-                      {steps.find((step) => step.id === currentStep)?.title}
-                    </span>
                     <div className="flex justify-center space-x-2">
                       {steps.map((step) => (
                         <div
