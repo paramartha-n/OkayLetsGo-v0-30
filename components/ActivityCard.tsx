@@ -179,10 +179,43 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
               size="sm"
               className="h-[26px] sm:h-8 text-sm text-muted-foreground hover:text-primary flex items-center gap-1.5 shrink-0"
               onClick={() => {
-                const mapsUrl = placeDetails.placeId
-                  ? `https://www.google.com/maps/place/?q=place_id:${placeDetails.placeId}`
-                  : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${activity} ${city}`)}`;
-                window.open(mapsUrl, '_blank');
+                const query = placeDetails.placeId
+                  ? `place_id:${placeDetails.placeId}`
+                  : `${activity} ${city}`;
+                
+                // Check if device is iOS
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                // Check if device is Android
+                const isAndroid = /Android/.test(navigator.userAgent);
+                
+                let mapsUrl;
+                if (isIOS) {
+                  // iOS uses comgooglemaps:// protocol if the app is installed, otherwise falls back to maps.google.com
+                  mapsUrl = placeDetails.placeId
+                    ? `comgooglemaps://?q=${encodeURIComponent(query)}&query_place_id=${placeDetails.placeId}`
+                    : `comgooglemaps://?q=${encodeURIComponent(query)}`;
+                } else if (isAndroid) {
+                  // Android uses geo: protocol or google.navigation
+                  mapsUrl = placeDetails.placeId
+                    ? `google.navigation:q=${encodeURIComponent(query)}`
+                    : `geo:0,0?q=${encodeURIComponent(query)}`;
+                } else {
+                  // Desktop fallback
+                  mapsUrl = placeDetails.placeId
+                    ? `https://www.google.com/maps/place/?q=place_id:${placeDetails.placeId}`
+                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+                }
+
+                // Try to open in native app first
+                const win = window.open(mapsUrl, '_blank');
+                
+                // If opening in native app fails, fallback to browser version
+                if (!win || win.closed || typeof win.closed === 'undefined') {
+                  window.open(
+                    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`,
+                    '_blank'
+                  );
+                }
               }}
             >
               <MapPin className="w-3.5 h-3.5" />

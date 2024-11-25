@@ -1,3 +1,7 @@
+V0.46
+- Itinerary: Activity Card
+  - Fixed View on Maps button for mobile
+
 V0.45
 - Itinerary: Hotel Card
   - Mobile friendly
