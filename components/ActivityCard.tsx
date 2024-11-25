@@ -195,10 +195,10 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
                     ? `comgooglemaps://?q=${encodeURIComponent(query)}&query_place_id=${placeDetails.placeId}`
                     : `comgooglemaps://?q=${encodeURIComponent(query)}`;
                 } else if (isAndroid) {
-                  // Android uses geo: protocol or google.navigation
+                  // Android uses google.com/maps format with a special intent scheme
                   mapsUrl = placeDetails.placeId
-                    ? `google.navigation:q=${encodeURIComponent(query)}`
-                    : `geo:0,0?q=${encodeURIComponent(query)}`;
+                    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activity)}&query_place_id=${placeDetails.placeId}`
+                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
                 } else {
                   // Desktop fallback
                   mapsUrl = placeDetails.placeId
@@ -206,16 +206,7 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
                     : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
                 }
 
-                // Try to open in native app first
-                const win = window.open(mapsUrl, '_blank');
-                
-                // If opening in native app fails, fallback to browser version
-                if (!win || win.closed || typeof win.closed === 'undefined') {
-                  window.open(
-                    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`,
-                    '_blank'
-                  );
-                }
+                window.open(mapsUrl, '_blank');
               }}
             >
               <MapPin className="w-3.5 h-3.5" />

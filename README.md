@@ -1,3 +1,7 @@
+V0.47
+- Itinerary: Activity Card
+  - Fixed View on Maps button for mobile, to correctly open Place in Google Maps instead of directions
+
 V0.46
 - Itinerary: Activity Card
   - Fixed View on Maps button for mobile
