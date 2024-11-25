@@ -29,7 +29,7 @@ export default function CityStep({ onNext, isFirstStep }: CityStepProps) {
   };
 
   return (
-    <div className="min-h-full md:h-[80vh] md:px-[20%] flex items-center">
+    <div className="min-h-[85vh] md:min-h-full md:h-[85vh] md:px-[20%] flex items-center">
       <div className="space-y-4 w-full">
         <div className="text-center mb-6">
           <h2 className="text-lg font-semibold mb-2">Where would you like to go?</h2>

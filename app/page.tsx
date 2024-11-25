@@ -103,11 +103,6 @@ export default function Home() {
                 </AccordionTrigger>
                 <AccordionContent>
                   <Card className="p-6">
-                    {currentStep === steps.length && (
-                      <div className="flex justify-end mb-4">
-                        <CurrencySelector />
-                      </div>
-                    )}
                     <div className="scale-[0.95] origin-top">
                       {CurrentStepComponent && (
                         <CurrentStepComponent 
@@ -123,11 +118,11 @@ export default function Home() {
                           <Button
                             variant="outline"
                             onClick={handlePrevious}
-                            className="w-[15%]"
+                            className="w-[20%] md:w-[15%]"
                           >
                             <ArrowLeft className="w-5 h-5" />
                           </Button>
-                          <Button onClick={handleNext} className="w-[15%]">
+                          <Button onClick={handleNext} className="w-[20%] md:w-[15%]">
                             <ArrowRight className="w-5 h-5" />
                           </Button>
                         </div>
@@ -138,7 +133,7 @@ export default function Home() {
                           <Button
                             variant="outline"
                             onClick={handlePrevious}
-                            className="w-[15%]"
+                            className="w-[20%] md:w-[15%]"
                           >
                             <ArrowLeft className="w-5 h-5" />
                           </Button>

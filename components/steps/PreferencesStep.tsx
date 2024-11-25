@@ -16,7 +16,7 @@ export default function PreferencesStep({ onNext }: PreferencesStepProps) {
   };
 
   return (
-    <div className="min-h-full md:h-[80vh] md:px-[20%] flex items-center">
+    <div className="min-h-[75vh] md:min-h-full md:h-[80vh] md:px-[20%] flex items-center">
       <div className="w-full">
         <div className="space-y-4">
           <div className="text-center mb-6">

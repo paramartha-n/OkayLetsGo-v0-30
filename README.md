@@ -1,3 +1,7 @@
+V0.49
+- User input form: UI/UX
+  - Overhauled mobile content layout, buttons, alignment
+
 V0.48
 - User input form: UI/UX
   - Overhauled content layout, buttons, alignment

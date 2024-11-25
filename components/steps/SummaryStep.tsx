@@ -17,6 +17,7 @@ import {
   Luggage
 } from "lucide-react";
 import { useTripContext } from "@/context/TripContext";
+import CurrencySelector from "@/components/CurrencySelector";
 
 interface SummaryStepProps {
   onEdit: (step: number) => void;
@@ -85,13 +86,13 @@ const summaryItems = [
           tripData.activities.map((activity: string) => (
             <span
               key={activity}
-              className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"
+              className="inline-flex items-center px-1.5 md:px-2 py-0.5 rounded-full text-[10px] md:text-xs font-medium bg-primary/10 text-primary"
             >
               {activity}
             </span>
           ))
         ) : (
-          <span className="text-sm text-muted-foreground">Not specified</span>
+          <span className="text-xs md:text-sm text-muted-foreground">Not specified</span>
         )}
       </div>
     )
@@ -107,13 +108,13 @@ const summaryItems = [
           tripData.restaurants.map((restaurant: string) => (
             <span
               key={restaurant}
-              className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"
+              className="inline-flex items-center px-1.5 md:px-2 py-0.5 rounded-full text-[10px] md:text-xs font-medium bg-primary/10 text-primary"
             >
               {restaurant}
             </span>
           ))
         ) : (
-          <span className="text-sm text-muted-foreground">Not specified</span>
+          <span className="text-xs md:text-sm text-muted-foreground">Not specified</span>
         )}
       </div>
     )
@@ -129,13 +130,13 @@ const summaryItems = [
           tripData.transport.map((transport: string) => (
             <span
               key={transport}
-              className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"
+              className="inline-flex items-center px-1.5 md:px-2 py-0.5 rounded-full text-[10px] md:text-xs font-medium bg-primary/10 text-primary"
             >
               {transport}
             </span>
           ))
         ) : (
-          <span className="text-sm text-muted-foreground">Not specified</span>
+          <span className="text-xs md:text-sm text-muted-foreground">Not specified</span>
         )}
       </div>
     )
@@ -165,10 +166,11 @@ export default function SummaryStep({ onEdit, onCreateItinerary }: SummaryStepPr
   };
 
   return (
-    <div className="min-h-full md:h-[80vh] md:px-[20%] flex items-center">
+    <div className="min-h-[75vh] md:min-h-full md:h-[80vh] md:px-[20%] flex items-center">
       <div className="w-full space-y-6">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold">Trip Summary</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-base md:text-xl font-semibold">Trip Summary</h2>
+          <CurrencySelector />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -180,8 +182,8 @@ export default function SummaryStep({ onEdit, onCreateItinerary }: SummaryStepPr
                     {item.icon}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-medium">{item.title}</h3>
-                    <div className="text-sm text-muted-foreground mt-0.5 break-words">
+                    <h3 className="text-xs md:text-sm font-medium">{item.title}</h3>
+                    <div className="text-xs md:text-sm text-muted-foreground mt-0.5 break-words">
                       {item.getValue(tripData)}
                     </div>
                   </div>
@@ -206,8 +208,8 @@ export default function SummaryStep({ onEdit, onCreateItinerary }: SummaryStepPr
                 {summaryItems[summaryItems.length - 1].icon}
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-sm font-medium">{summaryItems[summaryItems.length - 1].title}</h3>
-                <div className="text-sm text-muted-foreground mt-0.5 break-words">
+                <h3 className="text-xs md:text-sm font-medium">{summaryItems[summaryItems.length - 1].title}</h3>
+                <div className="text-xs md:text-sm text-muted-foreground mt-0.5 break-words">
                   {summaryItems[summaryItems.length - 1].getValue(tripData)}
                 </div>
               </div>
