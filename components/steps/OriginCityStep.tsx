@@ -54,30 +54,33 @@ export default function OriginCityStep({ onNext, isFirstStep }: OriginCityStepPr
   };
 
   return (
-    <div className="space-y-4">
-      <div className="text-center mb-6">
-        <h2 className="text-lg font-semibold mb-2">Where are you traveling from?</h2>
-      </div>
-
-      <div className="relative flex gap-2">
-        <div className="flex-1">
-          <PlacesAutocomplete
-            value={tripData.originCity}
-            onChange={handleCityChange}
-            onSelect={() => onNext()}
-            placeholder="Enter your departure city"
-            autoFocus={true}
-          />
+    <div className="min-h-full md:h-[80vh] md:px-[20%] flex items-center">
+      <div className="w-full">
+        <div className="text-center mb-6">
+          <h2 className="text-lg font-semibold mb-2">Where are you traveling from?</h2>
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          onClick={getNearestMajorCity}
-          title="Detect my location"
-        >
-          <LocateFixed className="h-4 w-4" />
-        </Button>
+
+        <div className="relative flex gap-2">
+          <div className="flex-1">
+            <PlacesAutocomplete
+              value={tripData.originCity}
+              onChange={handleCityChange}
+              onSelect={() => onNext()}
+              placeholder="Enter your departure city"
+              autoFocus={true}
+            />
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            onClick={getNearestMajorCity}
+            title="Detect my location"
+            className="w-[20%]"
+          >
+            <LocateFixed className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );

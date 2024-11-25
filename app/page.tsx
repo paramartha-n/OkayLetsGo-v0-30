@@ -19,22 +19,22 @@ import RestaurantStep from "@/components/steps/RestaurantStep";
 import PreferencesStep from "@/components/steps/PreferencesStep";
 import BudgetStep from "@/components/steps/BudgetStep";
 import SummaryStep from "@/components/steps/SummaryStep";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { TripProvider } from "@/context/TripContext";
 import CurrencySelector from "@/components/CurrencySelector";
 import Itinerary from "@/components/Itinerary";
 
 const steps = [
-  { id: 1, title: "Destination", component: CityStep },
-  { id: 2, title: "Origin", component: OriginCityStep },
-  { id: 3, title: "Dates", component: DateStep },
-  { id: 4, title: "Hotel", component: HotelStep },
-  { id: 5, title: "Transport", component: TransportStep },
-  { id: 6, title: "Activities", component: ActivityStep },
-  { id: 7, title: "Restaurants", component: RestaurantStep },
-  { id: 8, title: "Budget", component: BudgetStep },
-  { id: 9, title: "Preferences", component: PreferencesStep },
-  { id: 10, title: "Summary", component: SummaryStep },
+  { id: 1, component: CityStep },
+  { id: 2, component: OriginCityStep },
+  { id: 3, component: DateStep },
+  { id: 4, component: HotelStep },
+  { id: 5, component: ActivityStep },
+  { id: 6, component: RestaurantStep },
+  { id: 7, component: TransportStep },
+  { id: 8, component: BudgetStep },
+  { id: 9, component: PreferencesStep },
+  { id: 10, component: SummaryStep },
 ];
 
 export default function Home() {
@@ -126,14 +126,12 @@ export default function Home() {
                           <Button
                             variant="outline"
                             onClick={handlePrevious}
-                            className="w-[30%]"
+                            className="w-[15%]"
                           >
-                            <ChevronLeft className="w-4 h-4 mr-2" />
-                            Previous
+                            <ArrowLeft className="w-5 h-5" />
                           </Button>
-                          <Button onClick={handleNext} className="w-[30%]">
-                            Next
-                            <ChevronRight className="w-4 h-4 ml-2" />
+                          <Button onClick={handleNext} className="w-[15%]">
+                            <ArrowRight className="w-5 h-5" />
                           </Button>
                         </div>
                       )}
@@ -143,10 +141,9 @@ export default function Home() {
                           <Button
                             variant="outline"
                             onClick={handlePrevious}
-                            className="w-[30%]"
+                            className="w-[15%]"
                           >
-                            <ChevronLeft className="w-4 h-4 mr-2" />
-                            Previous
+                            <ArrowLeft className="w-5 h-5" />
                           </Button>
                         </div>
                       )}

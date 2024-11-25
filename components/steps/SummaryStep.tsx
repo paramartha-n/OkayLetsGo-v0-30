@@ -47,14 +47,14 @@ const summaryItems = [
     id: 'origin',
     icon: <Plane className="w-4 h-4" />,
     title: 'Origin',
-    step: 2,
+    step: 1,
     getValue: (tripData: any) => tripData.originCity || 'Not specified'
   },
   {
     id: 'destination',
     icon: <MapPin className="w-4 h-4" />,
     title: 'Destination',
-    step: 1,
+    step: 2,
     getValue: (tripData: any) => tripData.city || 'Not specified'
   },
   {
@@ -75,32 +75,10 @@ const summaryItems = [
     getValue: (tripData: any) => tripData.hotel.customHotel || getAccommodationPrice(tripData.hotel.type) || 'Not specified'
   },
   {
-    id: 'transport',
-    icon: <Car className="w-4 h-4" />,
-    title: 'Transportation',
-    step: 5,
-    getValue: (tripData: any) => (
-      <div className="flex flex-wrap gap-1.5">
-        {tripData.transport.length > 0 ? (
-          tripData.transport.map((transport: string) => (
-            <span
-              key={transport}
-              className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"
-            >
-              {transport}
-            </span>
-          ))
-        ) : (
-          <span className="text-sm text-muted-foreground">Not specified</span>
-        )}
-      </div>
-    )
-  },
-  {
     id: 'activities',
     icon: <Activity className="w-4 h-4" />,
     title: 'Activities',
-    step: 6,
+    step: 5,
     getValue: (tripData: any) => (
       <div className="flex flex-wrap gap-1.5">
         {tripData.activities.length > 0 ? (
@@ -122,7 +100,7 @@ const summaryItems = [
     id: 'dining',
     icon: <UtensilsCrossed className="w-4 h-4" />,
     title: 'Dining Preferences',
-    step: 7,
+    step: 6,
     getValue: (tripData: any) => (
       <div className="flex flex-wrap gap-1.5">
         {tripData.restaurants.length > 0 ? (
@@ -132,6 +110,28 @@ const summaryItems = [
               className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"
             >
               {restaurant}
+            </span>
+          ))
+        ) : (
+          <span className="text-sm text-muted-foreground">Not specified</span>
+        )}
+      </div>
+    )
+  },
+  {
+    id: 'transport',
+    icon: <Car className="w-4 h-4" />,
+    title: 'Transportation',
+    step: 7,
+    getValue: (tripData: any) => (
+      <div className="flex flex-wrap gap-1.5">
+        {tripData.transport.length > 0 ? (
+          tripData.transport.map((transport: string) => (
+            <span
+              key={transport}
+              className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"
+            >
+              {transport}
             </span>
           ))
         ) : (
@@ -165,49 +165,74 @@ export default function SummaryStep({ onEdit, onCreateItinerary }: SummaryStepPr
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold mb-2">Trip Summary</h2>
-        <p className="text-muted-foreground">Review your travel preferences</p>
-      </div>
+    <div className="min-h-full md:h-[80vh] md:px-[20%] flex items-center">
+      <div className="w-full space-y-6">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">Trip Summary</h2>
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {summaryItems.map((item) => (
-          <Card key={item.id} className="p-3">
-            <div className="flex items-start justify-between h-full">
-              <div className="flex items-start space-x-3 min-w-0">
-                <div className="w-4 h-4 text-primary mt-0.5 flex-shrink-0">
-                  {item.icon}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-sm font-medium">{item.title}</h3>
-                  <div className="text-sm text-muted-foreground mt-0.5 break-words">
-                    {item.getValue(tripData)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {summaryItems.slice(0, -1).map((item) => (
+            <Card key={item.id} className="p-3">
+              <div className="flex items-start justify-between h-full">
+                <div className="flex items-start space-x-3 min-w-0">
+                  <div className="w-4 h-4 text-primary mt-0.5 flex-shrink-0">
+                    {item.icon}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm font-medium">{item.title}</h3>
+                    <div className="text-sm text-muted-foreground mt-0.5 break-words">
+                      {item.getValue(tripData)}
+                    </div>
                   </div>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-muted-foreground hover:text-primary flex-shrink-0 -mt-1 -mr-2 h-8 w-8"
+                  onClick={() => onEdit(item.step)}
+                >
+                  <Pencil className="w-4 h-4" />
+                </Button>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-muted-foreground hover:text-primary flex-shrink-0 -mt-1 -mr-2 h-8 w-8"
-                onClick={() => onEdit(item.step)}
-              >
-                <Pencil className="w-4 h-4" />
-              </Button>
+            </Card>
+          ))}
+        </div>
+        
+        <Card className="p-3 col-span-full">
+          <div className="flex items-start justify-between h-full">
+            <div className="flex items-start space-x-3 min-w-0">
+              <div className="w-4 h-4 text-primary mt-0.5 flex-shrink-0">
+                {summaryItems[summaryItems.length - 1].icon}
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-medium">{summaryItems[summaryItems.length - 1].title}</h3>
+                <div className="text-sm text-muted-foreground mt-0.5 break-words">
+                  {summaryItems[summaryItems.length - 1].getValue(tripData)}
+                </div>
+              </div>
             </div>
-          </Card>
-        ))}
-      </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground hover:text-primary flex-shrink-0 -mt-1 -mr-2 h-8 w-8"
+              onClick={() => onEdit(summaryItems[summaryItems.length - 1].step)}
+            >
+              <Pencil className="w-4 h-4" />
+            </Button>
+          </div>
+        </Card>
 
-      <div className="flex justify-center w-full">
-        <Button 
-          size="lg"
-          onClick={handleCreateItinerary}
-          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center gap-2"
-        >
-          <Luggage className="w-5 h-5" />
-          Create Itinerary
-        </Button>
+        <div className="flex justify-center w-full">
+          <Button 
+            size="lg"
+            onClick={handleCreateItinerary}
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center gap-2"
+          >
+            <Luggage className="w-5 h-5" />
+            Create Itinerary
+          </Button>
+        </div>
       </div>
     </div>
   );

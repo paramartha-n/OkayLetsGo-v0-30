@@ -52,58 +52,60 @@ export default function TransportStep({ onNext }: TransportStepProps) {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="text-center mb-6">
-        <h2 className="text-lg font-semibold mb-2">How would you like to get around?</h2>
-      </div>
+    <div className="min-h-full md:h-[80vh] md:px-[20%] flex items-center">
+      <div className="w-full">
+        <div className="text-center mb-6">
+          <h2 className="text-lg font-semibold mb-2">How would you like to get around?</h2>
+        </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        {transportOptions.map((transport) => (
-          <Card
-            key={transport.id}
-            className={`cursor-pointer transition-all duration-200 ${
-              tripData.transport.includes(transport.id)
-                ? "border-traveloka-primary bg-traveloka-primary/5 dark:bg-traveloka-primary/10"
-                : "hover:bg-traveloka-primary/5"
-            }`}
-            onClick={() => toggleTransport(transport.id)}
-          >
-            <CardContent className="p-2 sm:p-4">
-              <div className="flex items-start justify-end space-x-2 sm:space-x-3">
-                <div className="flex-1 flex flex-col items-end space-y-1">
-                  <div className="flex items-center justify-end space-x-1 sm:space-x-2 w-full">
-                    <Label 
-                      className={`font-bold text-[11px] sm:text-base truncate text-right ${
+        <div className="grid grid-cols-2 gap-4">
+          {transportOptions.map((transport) => (
+            <Card
+              key={transport.id}
+              className={`cursor-pointer transition-all duration-200 ${
+                tripData.transport.includes(transport.id)
+                  ? "border-traveloka-primary bg-traveloka-primary/5 dark:bg-traveloka-primary/10"
+                  : "hover:bg-traveloka-primary/5"
+              }`}
+              onClick={() => toggleTransport(transport.id)}
+            >
+              <CardContent className="p-2 sm:p-4">
+                <div className="flex items-start justify-end space-x-2 sm:space-x-3">
+                  <div className="flex-1 flex flex-col items-end space-y-1">
+                    <div className="flex items-center justify-end space-x-1 sm:space-x-2 w-full">
+                      <Label 
+                        className={`font-bold text-[11px] sm:text-base truncate text-right ${
+                          tripData.transport.includes(transport.id)
+                            ? "text-traveloka-primary"
+                            : ""
+                        }`}
+                      >
+                        {transport.label}
+                      </Label>
+                      <div className={`p-1.5 sm:p-2 rounded-full ${
                         tripData.transport.includes(transport.id)
-                          ? "text-traveloka-primary"
-                          : ""
-                      }`}
-                    >
-                      {transport.label}
-                    </Label>
-                    <div className={`p-1.5 sm:p-2 rounded-full ${
+                          ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
+                          : "bg-traveloka-primary/10 text-traveloka-primary"
+                      }`}>
+                        {transport.icon}
+                      </div>
+                    </div>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground text-right">
+                      {transport.description}
+                    </p>
+                    <div className={`inline-block px-2 py-1 mt-1 text-[10px] sm:text-xs rounded-full text-center ${
                       tripData.transport.includes(transport.id)
                         ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
                         : "bg-traveloka-primary/10 text-traveloka-primary"
                     }`}>
-                      {transport.icon}
+                      {transport.typical}
                     </div>
                   </div>
-                  <p className="text-[10px] sm:text-xs text-muted-foreground text-right">
-                    {transport.description}
-                  </p>
-                  <div className={`inline-block px-2 py-1 mt-1 text-[10px] sm:text-xs rounded-full text-center ${
-                    tripData.transport.includes(transport.id)
-                      ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
-                      : "bg-traveloka-primary/10 text-traveloka-primary"
-                  }`}>
-                    {transport.typical}
-                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );

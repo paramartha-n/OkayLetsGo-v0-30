@@ -1,3 +1,8 @@
+V0.48
+- User input form: UI/UX
+  - Overhauled content layout, buttons, alignment
+  - Reordered user input steps, moving transport to before budget
+
 V0.47
 - Itinerary: Activity Card
   - Fixed View on Maps button for mobile, to correctly open Place in Google Maps instead of directions

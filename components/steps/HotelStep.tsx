@@ -78,104 +78,106 @@ export default function HotelStep({ onNext }: HotelStepProps) {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="text-center mb-6">
-        <h2 className="text-lg font-semibold mb-2">Where would you like to stay?</h2>
-      </div>
+    <div className="min-h-full md:h-[80vh] md:px-[20%] flex items-center">
+      <div className="w-full">
+        <div className="text-center mb-6">
+          <h2 className="text-lg font-semibold mb-2">Where would you like to stay?</h2>
+        </div>
 
-      {!hasCustomHotel ? (
-        <>
-          <div className="grid grid-cols-2 gap-4">
-            {accommodations.map((option) => (
-              <Card
-                key={option.id}
-                className={`cursor-pointer transition-all duration-200 ${
-                  tripData.hotel.type === option.id
-                    ? "border-traveloka-primary bg-traveloka-primary/5 dark:bg-traveloka-primary/10"
-                    : "hover:bg-traveloka-primary/5"
-                }`}
-                onClick={() => handleSelect(option.id)}
-              >
-                <CardContent className="p-2 sm:p-4">
-                  <div className="flex items-start justify-end space-x-2 sm:space-x-3">
-                    <div className="flex-1 flex flex-col items-end space-y-1">
-                      <div className="flex items-center justify-end space-x-1 sm:space-x-2 w-full">
-                        <Label 
-                          className={`font-bold text-[11px] sm:text-base truncate text-right ${
+        {!hasCustomHotel ? (
+          <>
+            <div className="grid grid-cols-2 gap-4">
+              {accommodations.map((option) => (
+                <Card
+                  key={option.id}
+                  className={`cursor-pointer transition-all duration-200 ${
+                    tripData.hotel.type === option.id
+                      ? "border-traveloka-primary bg-traveloka-primary/5 dark:bg-traveloka-primary/10"
+                      : "hover:bg-traveloka-primary/5"
+                  }`}
+                  onClick={() => handleSelect(option.id)}
+                >
+                  <CardContent className="p-2 sm:p-4">
+                    <div className="flex items-start justify-end space-x-2 sm:space-x-3">
+                      <div className="flex-1 flex flex-col items-end space-y-1">
+                        <div className="flex items-center justify-end space-x-1 sm:space-x-2 w-full">
+                          <Label 
+                            className={`font-bold text-[11px] sm:text-base truncate text-right ${
+                              tripData.hotel.type === option.id
+                                ? "text-traveloka-primary"
+                                : ""
+                            }`}
+                          >
+                            {option.title}
+                          </Label>
+                          <div className={`p-1.5 sm:p-2 rounded-full ${
                             tripData.hotel.type === option.id
-                              ? "text-traveloka-primary"
-                              : ""
-                          }`}
-                        >
-                          {option.title}
-                        </Label>
-                        <div className={`p-1.5 sm:p-2 rounded-full ${
+                              ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
+                              : "bg-traveloka-primary/10 text-traveloka-primary"
+                          }`}>
+                            {option.icon}
+                          </div>
+                        </div>
+                        <p className="text-xs text-muted-foreground text-right">
+                          {option.description}
+                        </p>
+                        <div className={`inline-block px-2 py-1 mt-1 text-xs rounded-full text-center ${
                           tripData.hotel.type === option.id
                             ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
                             : "bg-traveloka-primary/10 text-traveloka-primary"
                         }`}>
-                          {option.icon}
+                          {option.price.split('\n').map((line, index) => (
+                            <React.Fragment key={index}>
+                              {line}
+                              {index === 0 && <br />}
+                            </React.Fragment>
+                          ))}
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground text-right">
-                        {option.description}
-                      </p>
-                      <div className={`inline-block px-2 py-1 mt-1 text-xs rounded-full text-center ${
-                        tripData.hotel.type === option.id
-                          ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
-                          : "bg-traveloka-primary/10 text-traveloka-primary"
-                      }`}>
-                        {option.price.split('\n').map((line, index) => (
-                          <React.Fragment key={index}>
-                            {line}
-                            {index === 0 && <br />}
-                          </React.Fragment>
-                        ))}
-                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          <button
-            onClick={() => setHasCustomHotel(true)}
-            className="w-full text-center text-sm text-traveloka-primary hover:underline mt-4"
-          >
-            I already have a hotel in mind
-          </button>
-        </>
-      ) : (
-        <div className="space-y-4">
-          <div className="flex space-x-4">
-            <div className="flex-1">
-              <PlacesAutocomplete
-                value={tripData.hotel.customHotel || ''}
-                onChange={handleCustomHotelChange}
-                onSelect={handleCustomHotelSubmit}
-                placeholder="Enter hotel name"
-                autoFocus={true}
-                types={['lodging']}
-                locationBias={tripData.city}
-              />
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-            <Button 
-              onClick={handleCustomHotelSubmit}
-              disabled={!tripData.hotel.customHotel?.trim()}
-              className="w-[30%]"
+            <button
+              onClick={() => setHasCustomHotel(true)}
+              className="w-full text-center text-sm text-traveloka-primary hover:underline mt-4"
             >
-              Next
+              I already have a hotel in mind
+            </button>
+          </>
+        ) : (
+          <div className="space-y-4">
+            <div className="flex space-x-4">
+              <div className="flex-1">
+                <PlacesAutocomplete
+                  value={tripData.hotel.customHotel || ''}
+                  onChange={handleCustomHotelChange}
+                  onSelect={handleCustomHotelSubmit}
+                  placeholder="Enter hotel name"
+                  autoFocus={true}
+                  types={['lodging']}
+                  locationBias={tripData.city}
+                />
+              </div>
+              <Button 
+                onClick={handleCustomHotelSubmit}
+                disabled={!tripData.hotel.customHotel?.trim()}
+                className="w-[30%]"
+              >
+                Next
+              </Button>
+            </div>
+            <Button
+              variant="ghost"
+              className="text-sm text-traveloka-primary hover:text-traveloka-primary/80"
+              onClick={() => setHasCustomHotel(false)}
+            >
+              Back to hotel options
             </Button>
           </div>
-          <Button
-            variant="ghost"
-            className="text-sm text-traveloka-primary hover:text-traveloka-primary/80"
-            onClick={() => setHasCustomHotel(false)}
-          >
-            Back to hotel options
-          </Button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
