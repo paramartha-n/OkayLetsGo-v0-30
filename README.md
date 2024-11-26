@@ -1,3 +1,8 @@
+V0.50
+- App Meta Data
+  - Updated app name to OkayLetsGo
+  - Updated color scheme name to OkayLetsGo
+
 V0.49
 - User input form: UI/UX
   - Overhauled mobile content layout, buttons, alignment

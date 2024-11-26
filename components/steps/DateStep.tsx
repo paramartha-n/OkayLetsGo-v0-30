@@ -35,14 +35,14 @@ export default function DateStep({ onNext }: DateStepProps) {
 
   const footer = isComplete && (
     <div className="mt-3 flex items-center justify-center space-x-2">
-      <Badge variant="outline" className="text-xs border-traveloka-primary text-traveloka-primary">
+      <Badge variant="outline" className="text-xs border-okayletsgo-primary text-okayletsgo-primary">
         {format(tripData.dates.from!, "MMM d")}
       </Badge>
-      <ArrowRight className="w-3 h-3 text-traveloka-primary" />
-      <Badge variant="outline" className="text-xs border-traveloka-primary text-traveloka-primary">
+      <ArrowRight className="w-3 h-3 text-okayletsgo-primary" />
+      <Badge variant="outline" className="text-xs border-okayletsgo-primary text-okayletsgo-primary">
         {format(tripData.dates.to!, "MMM d")}
       </Badge>
-      <Badge className="ml-2 text-xs bg-traveloka-primary/20 text-traveloka-primary border-none">
+      <Badge className="ml-2 text-xs bg-okayletsgo-primary/20 text-okayletsgo-primary border-none">
         {Math.ceil(
           (tripData.dates.to!.getTime() - tripData.dates.from!.getTime()) / (1000 * 60 * 60 * 24)
         )}{" "}
@@ -73,18 +73,18 @@ export default function DateStep({ onNext }: DateStepProps) {
               classNames={{
                 day_range_start: "rounded-l-md",
                 day_range_end: "rounded-r-md",
-                day_selected: "!bg-traveloka-primary !text-white hover:!bg-traveloka-primary/90",
+                day_selected: "!bg-okayletsgo-primary !text-white hover:!bg-okayletsgo-primary/90",
                 day_today: "bg-gray-100 dark:bg-gray-800 text-foreground",
-                day_range_middle: "!bg-traveloka-primary/10 !text-traveloka-primary hover:!bg-traveloka-primary/20",
-                day: "h-9 w-9 text-center p-0 aria-selected:opacity-100 hover:bg-traveloka-primary/10 hover:text-traveloka-primary focus-visible:bg-traveloka-primary/10 focus-visible:text-traveloka-primary",
+                day_range_middle: "!bg-okayletsgo-primary/10 !text-okayletsgo-primary hover:!bg-okayletsgo-primary/20",
+                day: "h-9 w-9 text-center p-0 aria-selected:opacity-100 hover:bg-okayletsgo-primary/10 hover:text-okayletsgo-primary focus-visible:bg-okayletsgo-primary/10 focus-visible:text-okayletsgo-primary",
               }}
             />
           </div>
         </Card>
 
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="p-2 bg-traveloka-primary/10 rounded-lg">
-            <span className="block text-xs font-medium text-traveloka-primary">Departure Date</span>
+          <div className="p-2 bg-okayletsgo-primary/10 rounded-lg">
+            <span className="block text-xs font-medium text-okayletsgo-primary">Departure Date</span>
             <span className="text-sm">
               {tripData.dates.from ? (
                 format(tripData.dates.from, "EEE, MMM d")
@@ -93,8 +93,8 @@ export default function DateStep({ onNext }: DateStepProps) {
               )}
             </span>
           </div>
-          <div className="p-2 bg-traveloka-primary/10 rounded-lg">
-            <span className="block text-xs font-medium text-traveloka-primary">Return Date</span>
+          <div className="p-2 bg-okayletsgo-primary/10 rounded-lg">
+            <span className="block text-xs font-medium text-okayletsgo-primary">Return Date</span>
             <span className="text-sm">
               {tripData.dates.to ? (
                 format(tripData.dates.to, "EEE, MMM d")

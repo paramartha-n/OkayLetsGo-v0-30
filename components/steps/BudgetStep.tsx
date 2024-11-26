@@ -75,8 +75,8 @@ export default function BudgetStep({ onNext }: BudgetStepProps) {
               onClick={() => handleSelect(option.id)}
               className={`cursor-pointer transition-all duration-200 ${
                 getSelectedId() === option.id
-                  ? "border-traveloka-primary bg-traveloka-primary/5 dark:bg-traveloka-primary/10"
-                  : "hover:bg-traveloka-primary/5"
+                  ? "border-okayletsgo-primary bg-okayletsgo-primary/5 dark:bg-okayletsgo-primary/10"
+                  : "hover:bg-okayletsgo-primary/5"
               }`}
             >
               <CardContent className="p-2 sm:p-4">
@@ -86,7 +86,7 @@ export default function BudgetStep({ onNext }: BudgetStepProps) {
                       <Label 
                         className={`font-bold text-[11px] sm:text-base truncate text-right ${
                           getSelectedId() === option.id
-                            ? "text-traveloka-primary"
+                            ? "text-okayletsgo-primary"
                             : ""
                         }`}
                       >
@@ -94,8 +94,8 @@ export default function BudgetStep({ onNext }: BudgetStepProps) {
                       </Label>
                       <div className={`p-1.5 sm:p-2 rounded-full ${
                         getSelectedId() === option.id
-                          ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
-                          : "bg-traveloka-primary/10 text-traveloka-primary"
+                          ? "bg-okayletsgo-primary/20 text-okayletsgo-primary dark:bg-okayletsgo-primary/30"
+                          : "bg-okayletsgo-primary/10 text-okayletsgo-primary"
                       }`}>
                         {option.icon}
                       </div>
@@ -105,8 +105,8 @@ export default function BudgetStep({ onNext }: BudgetStepProps) {
                     </p>
                     <div className={`inline-block px-2 py-1 mt-1 text-[10px] sm:text-xs rounded-full text-center ${
                       getSelectedId() === option.id
-                        ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
-                        : "bg-traveloka-primary/10 text-traveloka-primary"
+                        ? "bg-okayletsgo-primary/20 text-okayletsgo-primary dark:bg-okayletsgo-primary/30"
+                        : "bg-okayletsgo-primary/10 text-okayletsgo-primary"
                     }`}>
                       {option.range}
                     </div>

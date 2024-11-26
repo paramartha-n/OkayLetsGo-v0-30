@@ -20,33 +20,25 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
-        traveloka: {
-          primary: '#0064D2',    // Traveloka's main blue
-          secondary: '#35405A',  // Dark blue/grey
-          accent: '#00B6B6',     // Teal accent (replacing orange)
-          success: '#00AA13',    // Green for success states
-          warning: '#00B6B6',    // Teal for warnings (replacing orange)
-          error: '#E12D2D',      // Red for errors
+        okayletsgo: {
+          primary: '#0064D2',    // Main blue
+          secondary: '#FF5722',  // Orange
+          error: '#FF483B',     // Red
+          success: '#00AA13',   // Green
+          warning: '#FFC107',   // Yellow
+          info: '#2196F3',      // Light Blue
           gray: {
-            50: '#F6F7F8',
-            100: '#E6E8EA',
-            200: '#C1C4C9',
-            300: '#989CA3',
-            400: '#6B717A',
-            500: '#35405A',
+            50: '#F5F5F5',
+            100: '#F0F0F0',
+            200: '#E4E4E4',
+            300: '#D6D6D6',
+            400: '#A3A3A3',
+            500: '#737373',
+            600: '#525252',
+            700: '#404040',
+            800: '#262626',
+            900: '#171717',
           },
-          teal: {
-            50: '#E6F7F7',
-            100: '#B3EBEB',
-            200: '#80DFDF',
-            300: '#4DD3D3',
-            400: '#26C7C7',
-            500: '#00B6B6',
-            600: '#009999',
-            700: '#007A7A',
-            800: '#005C5C',
-            900: '#003D3D'
-          }
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

@@ -9,16 +9,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-traveloka-primary text-white hover:bg-traveloka-primary/80',
+        default: 'bg-okayletsgo-primary text-white hover:bg-okayletsgo-primary/80',
         destructive:
-          'bg-traveloka-error text-white hover:bg-traveloka-primary/20',
+          'bg-okayletsgo-error text-white hover:bg-okayletsgo-primary/20',
         outline:
-          'border border-traveloka-gray-200 bg-white hover:bg-traveloka-primary/10 hover:text-traveloka-primary hover:border-traveloka-primary',
+          'border border-okayletsgo-gray-200 bg-white hover:bg-okayletsgo-primary/10 hover:text-okayletsgo-primary hover:border-okayletsgo-primary',
         secondary:
-          'bg-traveloka-secondary text-white hover:bg-traveloka-primary/20',
-        ghost: 'hover:bg-traveloka-primary/10 hover:text-traveloka-primary',
-        link: 'text-traveloka-primary underline-offset-4 hover:underline hover:text-traveloka-primary/80',
-        accent: 'bg-traveloka-primary text-white hover:bg-traveloka-primary/80'
+          'bg-okayletsgo-secondary text-white hover:bg-okayletsgo-primary/20',
+        ghost: 'hover:bg-okayletsgo-primary/10 hover:text-okayletsgo-primary',
+        link: 'text-okayletsgo-primary underline-offset-4 hover:underline hover:text-okayletsgo-primary/80',
+        accent: 'bg-okayletsgo-primary text-white hover:bg-okayletsgo-primary/80'
       },
       size: {
         default: 'h-10 px-4 py-2',
