@@ -24,7 +24,7 @@ export default function PlacesAutocomplete({
   placeholder,
   className = "",
   autoFocus = false,
-  types = ['(cities)'],
+  types = [['(cities)']],
   locationBias
 }: PlacesAutocompleteProps) {
   const { isLoaded } = useGooglePlaces();
@@ -46,7 +46,7 @@ export default function PlacesAutocomplete({
       service.getPlacePredictions(
         {
           input,
-          types: ['(cities)'],
+          types: types.flat(),
           sessionToken: sessionToken.current,
         },
         (predictions) => {
@@ -161,7 +161,7 @@ export default function PlacesAutocomplete({
       document.head.appendChild(style);
 
       autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
-        types: ['(cities)'],
+        types: types.flat(),
         fields: ['formatted_address', 'geometry', 'name', 'place_id', 'address_components'],
       });
 
@@ -236,7 +236,7 @@ export default function PlacesAutocomplete({
           autocompleteRef.current?.setBounds(bounds);
           
           // If searching for lodging, also restrict to the country level
-          if (types.includes('lodging') && results[0].place_id) {
+          if (types.flat().includes('lodging') && results[0].place_id) {
             const detailsRequest: google.maps.places.PlaceDetailsRequest = {
               placeId: results[0].place_id,
               fields: ['address_components']

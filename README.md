@@ -1,3 +1,7 @@
+V0.53
+- Bug fix
+  - Build error on Autocomplete
+
 V0.52
 - Itinerary: UX
   - Updated loading animation
