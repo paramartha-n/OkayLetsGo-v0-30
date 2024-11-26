@@ -156,7 +156,7 @@ export default function HotelStep({ onNext }: HotelStepProps) {
                   onSelect={handleCustomHotelSubmit}
                   placeholder="Enter hotel name"
                   autoFocus={true}
-                  types={['lodging']}
+                  types={[['lodging']]}
                   locationBias={tripData.city}
                 />
               </div>
