@@ -30,7 +30,7 @@ export default function PlacesAutocomplete({
   const { isLoaded } = useGooglePlaces();
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const sessionToken = useRef<google.maps.places.AutocompleteSessionToken | null>(null);
+  const sessionToken = useRef<google.maps.places.AutocompleteSessionToken>();
   const countryCache = useRef<Map<string, string>>(new Map());
   const lastPredictions = useRef<string[]>([]);
   const mountedRef = useRef<boolean>(false);
