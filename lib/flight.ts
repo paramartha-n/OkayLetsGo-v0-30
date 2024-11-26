@@ -73,10 +73,33 @@ export async function estimateFlightPrice(originCity: string, destinationCity: s
   }
 }
 
+async function getNearestMajorAirport(city: string): Promise<string> {
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+  const prompt = `What is the IATA code of the nearest major international airport to ${city}? 
+  Return ONLY the 3-letter IATA code in uppercase. For example, for Espoo it would return "HEL" (Helsinki).
+  For major cities with their own airport, return their main airport code.`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const text = response.text().trim().toUpperCase();
+    
+    // Validate that we got a 3-letter IATA code
+    if (/^[A-Z]{3}$/.test(text)) {
+      return text;
+    }
+    throw new Error("Invalid IATA code format");
+  } catch (error) {
+    console.error("Error getting nearest major airport:", error);
+    return getIATACode(city); // Fallback to regular IATA code lookup
+  }
+}
+
 export async function generateFlightData(originCity: string, destinationCity: string, departDate: Date, returnDate: Date, flightPrices: { min: number; max: number }) {
   const [departFormatted, returnFormatted] = [departDate, returnDate].map(formatDateForUrl);
   const [originIATA, destIATA] = await Promise.all([
-    getIATACode(originCity),
+    getNearestMajorAirport(originCity),
     getIATACode(destinationCity)
   ]);
   
