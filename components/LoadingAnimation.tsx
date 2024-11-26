@@ -52,7 +52,7 @@ export const LoadingAnimation = ({ retryCount = 0, maxRetries = 3 }: LoadingAnim
     <Card className="p-6 h-[10vh] overflow-hidden">
       <div className="relative flex flex-col items-center justify-center h-full">
         {/* Path with landmarks */}
-        <div className="relative w-full h-6 mb-2">
+        <div className="relative w-full h-8 mb-4 sm:h-6 sm:mb-2">
           {/* Dotted path */}
           <div className="absolute top-1/2 left-0 right-0 h-px bg-dotted-line" 
                style={{ 
@@ -76,17 +76,17 @@ export const LoadingAnimation = ({ retryCount = 0, maxRetries = 3 }: LoadingAnim
                   left: `${(index + 1) * (100 / (landmarks.length + 1))}%`,
                 }}
               >
-                <Landmark.icon className="w-4 h-4" />
+                <Landmark.icon className="w-5 h-5 sm:w-4 sm:h-4" />
               </div>
             );
           })}
         </div>
 
         {/* Loading message */}
-        <p className="text-sm text-center text-muted-foreground">
+        <p className="text-base sm:text-sm text-center text-muted-foreground">
           {loadingMessages[messageIndex]}
           {retryCount > 0 && (
-            <span className="block text-xs mt-1">
+            <span className="block text-sm sm:text-xs mt-2 sm:mt-1">
               Attempt {retryCount} of {maxRetries}
             </span>
           )}

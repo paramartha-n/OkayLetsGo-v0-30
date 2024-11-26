@@ -49,7 +49,10 @@ interface FlightInfo {
   };
   destination: {
     city: string;
-    code: string;
+    nearestAirport: {
+      code: string;
+      city: string;
+    };
   };
 }
 
