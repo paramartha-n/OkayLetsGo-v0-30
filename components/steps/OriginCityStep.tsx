@@ -68,7 +68,7 @@ export default function OriginCityStep({ onNext, isFirstStep }: OriginCityStepPr
               onSelect={() => onNext()}
               placeholder="Enter your departure city"
               autoFocus={true}
-              types={['(cities)']}
+              types={[['(cities)']]}
               className="w-full"
             />
           </div>
