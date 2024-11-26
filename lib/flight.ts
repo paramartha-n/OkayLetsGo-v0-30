@@ -101,25 +101,29 @@ async function getNearestMajorAirport(city: string): Promise<{ code: string; cit
 
 export async function generateFlightData(originCity: string, destinationCity: string, departDate: Date, returnDate: Date, flightPrices: { min: number; max: number }) {
   const [departFormatted, returnFormatted] = [departDate, returnDate].map(formatDateForUrl);
-  const [originAirport, destIATA] = await Promise.all([
+  const [originAirport, destAirport] = await Promise.all([
     getNearestMajorAirport(originCity),
-    getIATACode(destinationCity)
+    getNearestMajorAirport(destinationCity)
   ]);
   
   const displayOrigin = originAirport
     ? `${originAirport.city} (${originAirport.code})`
     : originCity;
 
+  const displayDestination = destAirport
+    ? `${destAirport.city} (${destAirport.code})`
+    : destinationCity;
+
   return {
     outbound: {
       departure: displayOrigin,
-      arrival: `${destinationCity} (${destIATA})`,
+      arrival: displayDestination,
       duration: "Varies",
       airline: "Multiple Airlines",
       price: "Varies"
     },
     return: {
-      departure: `${destinationCity} (${destIATA})`,
+      departure: displayDestination,
       arrival: displayOrigin,
       duration: "Varies",
       airline: "Multiple Airlines",
@@ -135,8 +139,8 @@ export async function generateFlightData(originCity: string, destinationCity: st
     },
     destination: {
       city: destinationCity,
-      code: destIATA
+      nearestAirport: destAirport
     },
-    skyscannerUrl: `https://www.skyscanner.com/transport/flights/${originAirport.code.toLowerCase()}/${destIATA.toLowerCase()}/${departFormatted}/${returnFormatted}/`
+    skyscannerUrl: `https://www.skyscanner.com/transport/flights/${originAirport.code.toLowerCase()}/${destAirport.code.toLowerCase()}/${departFormatted}/${returnFormatted}/`
   };
 }

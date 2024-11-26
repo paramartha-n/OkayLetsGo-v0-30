@@ -1,3 +1,7 @@
+V0.57
+- Itinerary: Flight Card
+  - Updated GetNearestAirport to also work on destination city
+
 V0.56
 - Itinerary: Flight Card
   - Updated GetNearestAirport function, now origin city is automatically replaced with nearest airport

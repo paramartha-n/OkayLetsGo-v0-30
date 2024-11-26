@@ -25,7 +25,10 @@ interface FlightCardProps {
   };
   destination?: {
     city: string;
-    code: string;
+    nearestAirport: {
+      code: string;
+      city: string;
+    };
   };
 }
 
@@ -43,8 +46,8 @@ export function FlightCard({
     ? `${origin.nearestAirport.city} (${origin.nearestAirport.code})`
     : originCity;
 
-  const displayDestination = destination
-    ? `${destinationCity} (${destination.code})`
+  const displayDestination = destination?.nearestAirport
+    ? `${destination.nearestAirport.city} (${destination.nearestAirport.code})`
     : destinationCity;
 
   return (
