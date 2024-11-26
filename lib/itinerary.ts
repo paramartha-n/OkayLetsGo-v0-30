@@ -31,9 +31,9 @@ export async function generateItinerary(tripData: any) {
     (tripData.dates.to.getTime() - tripData.dates.from.getTime()) / (1000 * 60 * 60 * 24)
   );
 
-  const flightData = generateFlightData(
-    originIATA,
-    destinationIATA,
+  const flightData = await generateFlightData(
+    tripData.originCity,
+    tripData.city,
     tripData.dates.from,
     tripData.dates.to,
     flightPrices

@@ -73,8 +73,12 @@ export async function estimateFlightPrice(originCity: string, destinationCity: s
   }
 }
 
-export function generateFlightData(originCity: string, destinationCity: string, departDate: Date, returnDate: Date, flightPrices: { min: number; max: number }) {
+export async function generateFlightData(originCity: string, destinationCity: string, departDate: Date, returnDate: Date, flightPrices: { min: number; max: number }) {
   const [departFormatted, returnFormatted] = [departDate, returnDate].map(formatDateForUrl);
+  const [originIATA, destIATA] = await Promise.all([
+    getIATACode(originCity),
+    getIATACode(destinationCity)
+  ]);
   
   return {
     outbound: {
@@ -95,6 +99,6 @@ export function generateFlightData(originCity: string, destinationCity: string, 
       min: flightPrices.min,
       max: flightPrices.max
     },
-    skyscannerUrl: `https://www.skyscanner.com/transport/flights-from/${originCity.toLowerCase()}/${departFormatted}/${destinationCity.toLowerCase()}/${returnFormatted}/`
+    skyscannerUrl: `https://www.skyscanner.com/transport/flights/${originIATA.toLowerCase()}/${destIATA.toLowerCase()}/${departFormatted}/${returnFormatted}/`
   };
 }
