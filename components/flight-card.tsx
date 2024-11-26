@@ -40,7 +40,7 @@ export function FlightCard({
   destination,
 }: FlightCardProps) {
   const displayOrigin = origin?.nearestAirport
-    ? `${originCity} (${origin.nearestAirport.code})`
+    ? `${origin.nearestAirport.city} (${origin.nearestAirport.code})`
     : originCity;
 
   const displayDestination = destination
