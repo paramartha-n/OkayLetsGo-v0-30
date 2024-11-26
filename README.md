@@ -1,3 +1,8 @@
+V0.56
+- Itinerary: Flight Card
+  - Updated GetNearestAirport function, now origin city is automatically replaced with nearest airport
+  - Outbound and inbound flights now shows airport codes
+
 V0.55
 - Itinerary: Flight Card
   - Added GetNearestAirport function

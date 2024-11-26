@@ -106,17 +106,21 @@ export async function generateFlightData(originCity: string, destinationCity: st
     getIATACode(destinationCity)
   ]);
   
+  const displayOrigin = originAirport
+    ? `${originAirport.city} (${originAirport.code})`
+    : originCity;
+
   return {
     outbound: {
-      departure: "Flexible",
-      arrival: "Flexible",
+      departure: displayOrigin,
+      arrival: `${destinationCity} (${destIATA})`,
       duration: "Varies",
       airline: "Multiple Airlines",
       price: "Varies"
     },
     return: {
-      departure: "Flexible",
-      arrival: "Flexible",
+      departure: `${destinationCity} (${destIATA})`,
+      arrival: displayOrigin,
       duration: "Varies",
       airline: "Multiple Airlines",
       price: "Varies"
@@ -127,10 +131,7 @@ export async function generateFlightData(originCity: string, destinationCity: st
     },
     origin: {
       city: originCity,
-      nearestAirport: {
-        code: originAirport.code,
-        city: originAirport.city
-      }
+      nearestAirport: originAirport
     },
     destination: {
       city: destinationCity,

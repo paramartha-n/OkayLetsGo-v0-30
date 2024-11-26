@@ -40,6 +40,17 @@ interface FlightInfo {
     distanceFromCenter: string;
     bookingUrl: string;
   };
+  origin: {
+    city: string;
+    nearestAirport: {
+      code: string;
+      city: string;
+    };
+  };
+  destination: {
+    city: string;
+    code: string;
+  };
 }
 
 interface ItineraryResponse {
@@ -296,6 +307,8 @@ export default function Itinerary() {
             returnDate={tripData.dates.to}
             skyscannerUrl={flightInfo.skyscannerUrl}
             estimatedPrice={flightInfo.totalPrice}
+            origin={flightInfo.origin}
+            destination={flightInfo.destination}
           />
 
           <HotelCard
