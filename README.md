@@ -1,3 +1,7 @@
+V0.52
+- Itinerary: UX
+  - Updated loading animation
+
 V0.51
 - User input form: UI/UX
   - Added flags to autocomplete

@@ -3,14 +3,15 @@
 import * as React from "react";
 import { useEffect, useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
-import { Loader2, ArrowRight } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { useTripContext } from "@/context/TripContext";
+import { FlightCard } from "@/components/flight-card";
+import { HotelCard } from "@/components/hotel-card";
+import { ActivityCard } from "@/components/ActivityCard";
+import { LoadingAnimation } from "@/components/LoadingAnimation";
 import { generateItinerary } from "@/lib/gemini";
-import { FlightCard } from "./flight-card";
-import { HotelCard } from "./hotel-card";
 import { TripHeader } from "./trip-header";
-import { Separator } from "./ui/separator";
-import { ActivityCard } from "./ActivityCard";
 
 interface FlightInfo {
   outbound: {
@@ -307,16 +308,7 @@ export default function Itinerary() {
       )}
 
       {loading ? (
-        <Card className="p-6">
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="w-6 h-6 animate-spin text-primary" />
-            <span className="ml-2">
-              {retryCount > 0 
-                ? `Retrying... (Attempt ${retryCount} of ${MAX_RETRIES})`
-                : "Generating your personalized itinerary..."}
-            </span>
-          </div>
-        </Card>
+        <LoadingAnimation retryCount={retryCount} maxRetries={MAX_RETRIES} />
       ) : itineraryContent ? (
         <div ref={contentRef} className="space-y-6">
           {parsedItinerary.length > 0 ? (

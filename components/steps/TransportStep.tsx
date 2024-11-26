@@ -64,8 +64,8 @@ export default function TransportStep({ onNext }: TransportStepProps) {
               key={transport.id}
               className={`cursor-pointer transition-all duration-200 ${
                 tripData.transport.includes(transport.id)
-                  ? "border-traveloka-primary bg-traveloka-primary/5 dark:bg-traveloka-primary/10"
-                  : "hover:bg-traveloka-primary/5"
+                  ? "border-primary bg-primary/5 dark:bg-primary/10"
+                  : "hover:bg-primary/5"
               }`}
               onClick={() => toggleTransport(transport.id)}
             >
@@ -76,7 +76,7 @@ export default function TransportStep({ onNext }: TransportStepProps) {
                       <Label 
                         className={`font-bold text-[11px] sm:text-base truncate text-right ${
                           tripData.transport.includes(transport.id)
-                            ? "text-traveloka-primary"
+                            ? "text-primary"
                             : ""
                         }`}
                       >
@@ -84,8 +84,8 @@ export default function TransportStep({ onNext }: TransportStepProps) {
                       </Label>
                       <div className={`p-1.5 sm:p-2 rounded-full ${
                         tripData.transport.includes(transport.id)
-                          ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
-                          : "bg-traveloka-primary/10 text-traveloka-primary"
+                          ? "bg-primary/20 text-primary dark:bg-primary/30"
+                          : "bg-primary/10 text-primary"
                       }`}>
                         {transport.icon}
                       </div>
@@ -95,8 +95,8 @@ export default function TransportStep({ onNext }: TransportStepProps) {
                     </p>
                     <div className={`inline-block px-2 py-1 mt-1 text-[10px] sm:text-xs rounded-full text-center ${
                       tripData.transport.includes(transport.id)
-                        ? "bg-traveloka-primary/20 text-traveloka-primary dark:bg-traveloka-primary/30"
-                        : "bg-traveloka-primary/10 text-traveloka-primary"
+                        ? "bg-primary/20 text-primary dark:bg-primary/30"
+                        : "bg-primary/10 text-primary"
                     }`}>
                       {transport.typical}
                     </div>
