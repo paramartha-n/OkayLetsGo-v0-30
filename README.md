@@ -1,3 +1,7 @@
+V0.51
+- User input form: UI/UX
+  - Added flags to autocomplete
+
 V0.50
 - App Meta Data
   - Updated app name to OkayLetsGo
