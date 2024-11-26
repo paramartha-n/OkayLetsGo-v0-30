@@ -16,6 +16,17 @@ interface FlightCardProps {
     min: number;
     max: number;
   };
+  origin?: {
+    city: string;
+    nearestAirport: {
+      code: string;
+      city: string;
+    };
+  };
+  destination?: {
+    city: string;
+    code: string;
+  };
 }
 
 export function FlightCard({
@@ -25,7 +36,17 @@ export function FlightCard({
   returnDate,
   skyscannerUrl,
   estimatedPrice = { min: 150, max: 300 },
+  origin,
+  destination,
 }: FlightCardProps) {
+  const displayOrigin = origin?.nearestAirport.city !== originCity
+    ? `${originCity} (via ${origin?.nearestAirport.city} - ${origin?.nearestAirport.code})`
+    : `${originCity} (${origin?.nearestAirport.code})`;
+
+  const displayDestination = destination
+    ? `${destinationCity} (${destination.code})`
+    : destinationCity;
+
   return (
     <Card className="p-6">
       <div className="space-y-6">
@@ -52,13 +73,13 @@ export function FlightCard({
             <div className="relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[11px] sm:text-sm font-bold">{originCity.split(',')[0]}</p>
+                  <p className="text-[11px] sm:text-sm font-bold">{displayOrigin}</p>
                   <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(departureDate, "MMM d, yyyy")}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[11px] sm:text-sm font-bold">{destinationCity.split(',')[0]}</p>
+                  <p className="text-[11px] sm:text-sm font-bold">{displayDestination}</p>
                   <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(departureDate, "MMM d, yyyy")}
                   </p>
@@ -82,13 +103,13 @@ export function FlightCard({
             <div className="relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[11px] sm:text-sm font-bold">{destinationCity.split(',')[0]}</p>
+                  <p className="text-[11px] sm:text-sm font-bold">{displayDestination}</p>
                   <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(returnDate, "MMM d, yyyy")}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[11px] sm:text-sm font-bold">{originCity.split(',')[0]}</p>
+                  <p className="text-[11px] sm:text-sm font-bold">{displayOrigin}</p>
                   <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(returnDate, "MMM d, yyyy")}
                   </p>

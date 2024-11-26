@@ -73,32 +73,35 @@ export async function estimateFlightPrice(originCity: string, destinationCity: s
   }
 }
 
-async function getNearestMajorAirport(city: string): Promise<string> {
+async function getNearestMajorAirport(city: string): Promise<{ code: string; city: string }> {
   const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-  const prompt = `What is the IATA code of the nearest major international airport to ${city}? 
-  Return ONLY the 3-letter IATA code in uppercase. For example, for Espoo it would return "HEL" (Helsinki).
-  For major cities with their own airport, return their main airport code.`;
+  const prompt = `What is the nearest major international airport to ${city}? 
+  Return the response in this exact JSON format:
+  {"code": "XXX", "city": "City Name"}
+  For example, for Espoo it would be:
+  {"code": "HEL", "city": "Helsinki"}`;
 
   try {
     const result = await model.generateContent(prompt);
     const response = result.response;
-    const text = response.text().trim().toUpperCase();
+    const text = response.text().trim();
+    const data = JSON.parse(sanitizeJsonString(text));
     
-    // Validate that we got a 3-letter IATA code
-    if (/^[A-Z]{3}$/.test(text)) {
-      return text;
+    // Validate that we got a proper response
+    if (data.code && /^[A-Z]{3}$/.test(data.code) && data.city) {
+      return data;
     }
-    throw new Error("Invalid IATA code format");
+    throw new Error("Invalid airport data format");
   } catch (error) {
     console.error("Error getting nearest major airport:", error);
-    return getIATACode(city); // Fallback to regular IATA code lookup
+    return { code: await getIATACode(city), city }; // Fallback to regular IATA code
   }
 }
 
 export async function generateFlightData(originCity: string, destinationCity: string, departDate: Date, returnDate: Date, flightPrices: { min: number; max: number }) {
   const [departFormatted, returnFormatted] = [departDate, returnDate].map(formatDateForUrl);
-  const [originIATA, destIATA] = await Promise.all([
+  const [originAirport, destIATA] = await Promise.all([
     getNearestMajorAirport(originCity),
     getIATACode(destinationCity)
   ]);
@@ -122,6 +125,17 @@ export async function generateFlightData(originCity: string, destinationCity: st
       min: flightPrices.min,
       max: flightPrices.max
     },
-    skyscannerUrl: `https://www.skyscanner.com/transport/flights/${originIATA.toLowerCase()}/${destIATA.toLowerCase()}/${departFormatted}/${returnFormatted}/`
+    origin: {
+      city: originCity,
+      nearestAirport: {
+        code: originAirport.code,
+        city: originAirport.city
+      }
+    },
+    destination: {
+      city: destinationCity,
+      code: destIATA
+    },
+    skyscannerUrl: `https://www.skyscanner.com/transport/flights/${originAirport.code.toLowerCase()}/${destIATA.toLowerCase()}/${departFormatted}/${returnFormatted}/`
   };
 }

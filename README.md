@@ -1,3 +1,7 @@
+V0.55
+- Itinerary: Flight Card
+  - Added GetNearestAirport function
+
 V0.54
 - Itinerary: Flight Card
   - Fixed SkyScanner url for mobile
