@@ -95,6 +95,6 @@ export function generateFlightData(originCity: string, destinationCity: string, 
       min: flightPrices.min,
       max: flightPrices.max
     },
-    skyscannerUrl: `https://www.skyscanner.com/transport/flights/${originCity.toLowerCase()}/${destinationCity.toLowerCase()}/${departFormatted}/${returnFormatted}/?stops=!onePlusStops`
+    skyscannerUrl: `https://www.skyscanner.com/transport/flights-from/${originCity.toLowerCase()}/${departFormatted}/${destinationCity.toLowerCase()}/${returnFormatted}/`
   };
 }

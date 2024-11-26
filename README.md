@@ -1,3 +1,7 @@
+V0.54
+- Itinerary: Flight Card
+  - Fixed SkyScanner url for mobile
+
 V0.53
 - Bug fix
   - Build error on Autocomplete
