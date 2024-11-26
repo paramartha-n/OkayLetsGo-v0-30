@@ -1,3 +1,7 @@
+V0.59
+- User input form: UI/UX
+  - Added animated placeholder with city suggestions 
+
 V0.58
 - User input form: UI/UX
   - Added input validation on buttons

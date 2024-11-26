@@ -10,7 +10,7 @@ interface PlacesAutocompleteProps {
   value: string;
   onChange: (value: string) => void;
   onSelect?: () => void;
-  placeholder: string;
+  placeholder: string | React.ReactNode;
   className?: string;
   autoFocus?: boolean;
   types?: google.maps.places.AutocompletePrediction['types'][];
@@ -266,6 +266,16 @@ export default function PlacesAutocomplete({
     }
   }, [autoFocus]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
+  };
+
+  const handleFocus = () => {
+    if (inputRef.current?.value) {
+      addCountryFlagsToPredictions();
+    }
+  };
+
   return (
     <div className="relative">
       <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
@@ -273,10 +283,17 @@ export default function PlacesAutocomplete({
         ref={inputRef}
         type="text"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={handleInputChange}
+        onFocus={handleFocus}
+        placeholder={typeof placeholder === 'string' ? placeholder : ''}
         className={`pl-10 ${className}`}
-        placeholder={placeholder}
+        autoFocus={autoFocus}
       />
+      {!value && typeof placeholder !== 'string' && (
+        <div className="absolute left-10 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+          {placeholder}
+        </div>
+      )}
     </div>
   );
 }
