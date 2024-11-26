@@ -40,6 +40,7 @@ const steps = [
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(1);
   const [accordionValue, setAccordionValue] = useState("step-form");
+  const [isStepValid, setIsStepValid] = useState(true);
   const itineraryRef = useRef<HTMLDivElement>(null);
   const CurrentStepComponent = steps.find((step) => step.id === currentStep)?.component;
 
@@ -67,8 +68,13 @@ export default function Home() {
     }, 100);
   };
 
-  const showNavigation = currentStep !== 1 && currentStep !== 4 && currentStep !== steps.length;
-  const showOnlyPrevious = currentStep === 4;
+  const showNavigation = currentStep !== 1 && currentStep !== 4 && currentStep !== steps.length && currentStep !== 8;
+  const showOnlyPrevious = currentStep === 4 || currentStep === 8;
+  const isActivityStep = currentStep === 5;
+  const isRestaurantStep = currentStep === 6;
+  const isTransportStep = currentStep === 7;
+  const isDateStep = currentStep === 3;
+  const needsValidation = isActivityStep || isRestaurantStep || isTransportStep || isDateStep;
 
   return (
     <TripProvider>
@@ -110,6 +116,7 @@ export default function Home() {
                           isFirstStep={currentStep === 1}
                           onEdit={handleEditStep}
                           onCreateItinerary={handleCreateItinerary}
+                          onValidationChange={needsValidation ? setIsStepValid : undefined}
                         />
                       )}
 
@@ -122,7 +129,11 @@ export default function Home() {
                           >
                             <ArrowLeft className="w-5 h-5" />
                           </Button>
-                          <Button onClick={handleNext} className="w-[20%] md:w-[15%]">
+                          <Button 
+                            onClick={handleNext} 
+                            className="w-[20%] md:w-[15%]"
+                            disabled={needsValidation && !isStepValid}
+                          >
                             <ArrowRight className="w-5 h-5" />
                           </Button>
                         </div>

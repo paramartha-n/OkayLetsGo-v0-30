@@ -133,13 +133,6 @@ export function FlightCard({
         <div className="space-y-4">
           <div className="flex items-center justify-between text-[11px] sm:text-sm">
             <div className="flex items-center space-x-2">
-              <Ban className="w-4 h-4" />
-              <span>Maximum Stops</span>
-            </div>
-            <span className="font-medium">1 stop</span>
-          </div>
-          <div className="flex items-center justify-between text-[11px] sm:text-sm">
-            <div className="flex items-center space-x-2">
               <Banknote className="w-4 h-4" />
               <span>Estimated Total Cost</span>
             </div>

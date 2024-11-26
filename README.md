@@ -1,3 +1,7 @@
+V0.58
+- User input form: UI/UX
+  - Added input validation on buttons
+
 V0.57
 - Itinerary: Flight Card
   - Updated GetNearestAirport to also work on destination city

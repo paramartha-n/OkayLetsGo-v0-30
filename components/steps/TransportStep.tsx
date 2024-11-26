@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Car, Bus, PersonStanding } from "lucide-react";
 import { useTripContext } from "@/context/TripContext";
+import React from 'react';
 
 const transportOptions = [
   {
@@ -38,9 +39,10 @@ const transportOptions = [
 
 interface TransportStepProps {
   onNext: () => void;
+  onValidationChange?: (isValid: boolean) => void;
 }
 
-export default function TransportStep({ onNext }: TransportStepProps) {
+export default function TransportStep({ onNext, onValidationChange }: TransportStepProps) {
   const { tripData, updateTripData } = useTripContext();
 
   const toggleTransport = (transportId: string) => {
@@ -49,7 +51,14 @@ export default function TransportStep({ onNext }: TransportStepProps) {
       : [...tripData.transport, transportId];
     
     updateTripData('transport', newTransports);
+    // Update validation state whenever transport options change
+    onValidationChange?.(newTransports.length > 0);
   };
+
+  // Set initial validation state on component mount
+  React.useEffect(() => {
+    onValidationChange?.(tripData.transport.length > 0);
+  }, []);
 
   return (
     <div className="min-h-[75vh] md:min-h-full md:h-[80vh] md:px-[20%] flex items-center">

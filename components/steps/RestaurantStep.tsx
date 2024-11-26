@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { UtensilsCrossed, Coffee, Wine, Salad, Beef, Coins } from "lucide-react";
 import { useTripContext } from "@/context/TripContext";
+import React from 'react';
 
 const cuisineTypes = [
   {
@@ -52,9 +53,10 @@ const cuisineTypes = [
 
 interface RestaurantStepProps {
   onNext: () => void;
+  onValidationChange?: (isValid: boolean) => void;
 }
 
-export default function RestaurantStep({ onNext }: RestaurantStepProps) {
+export default function RestaurantStep({ onNext, onValidationChange }: RestaurantStepProps) {
   const { tripData, updateTripData } = useTripContext();
 
   const toggleCuisine = (cuisineId: string) => {
@@ -63,7 +65,14 @@ export default function RestaurantStep({ onNext }: RestaurantStepProps) {
       : [...tripData.restaurants, cuisineId];
     
     updateTripData('restaurants', newCuisines);
+    // Update validation state whenever cuisines change
+    onValidationChange?.(newCuisines.length > 0);
   };
+
+  // Set initial validation state on component mount
+  React.useEffect(() => {
+    onValidationChange?.(tripData.restaurants.length > 0);
+  }, []);
 
   return (
     <div className="min-h-[75vh] md:min-h-full md:h-[80vh] md:px-[20%] flex items-center">

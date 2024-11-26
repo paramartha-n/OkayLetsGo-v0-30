@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
@@ -11,9 +11,10 @@ import { useTripContext } from "@/context/TripContext";
 
 interface DateStepProps {
   onNext: () => void;
+  onValidationChange?: (isValid: boolean) => void;
 }
 
-export default function DateStep({ onNext }: DateStepProps) {
+export default function DateStep({ onNext, onValidationChange }: DateStepProps) {
   const { tripData, updateTripData } = useTripContext();
   const [isSelecting, setIsSelecting] = useState(false);
 
@@ -21,6 +22,7 @@ export default function DateStep({ onNext }: DateStepProps) {
     if (tripData.dates.from && tripData.dates.to && !isSelecting) {
       updateTripData('dates', { from: undefined, to: undefined });
       setIsSelecting(true);
+      onValidationChange?.(false);
     }
   };
 
@@ -28,8 +30,15 @@ export default function DateStep({ onNext }: DateStepProps) {
     updateTripData('dates', range);
     if (range?.from && range?.to) {
       setIsSelecting(false);
+      onValidationChange?.(true);
+    } else {
+      onValidationChange?.(false);
     }
   };
+
+  useEffect(() => {
+    onValidationChange?.(Boolean(tripData.dates.from && tripData.dates.to));
+  }, []);
 
   const isComplete = tripData.dates.from && tripData.dates.to;
 
