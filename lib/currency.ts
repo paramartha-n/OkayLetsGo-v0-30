@@ -1,73 +1,46 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
+
 type CurrencyMap = {
   [key: string]: string;
 };
 
-const cityToCurrency: CurrencyMap = {
-  // Asia
-  'Tokyo': 'JPY',
-  'Osaka': 'JPY',
-  'Kyoto': 'JPY',
-  'Seoul': 'KRW',
-  'Busan': 'KRW',
-  'Beijing': 'CNY',
-  'Shanghai': 'CNY',
-  'Hong Kong': 'HKD',
-  'Bangkok': 'THB',
-  'Singapore': 'SGD',
-  'Kuala Lumpur': 'MYR',
-  'Jakarta': 'IDR',
-  'Mumbai': 'INR',
-  'Delhi': 'INR',
+// Keep the map as a cache to avoid unnecessary API calls
+const currencyCache: CurrencyMap = {};
 
-  // Middle East
-  'Dubai': 'AED',
-  'Abu Dhabi': 'AED',
-
-  // Europe
-  'Paris': 'EUR',
-  'Rome': 'EUR',
-  'Madrid': 'EUR',
-  'Barcelona': 'EUR',
-  'Berlin': 'EUR',
-  'Amsterdam': 'EUR',
-  'London': 'GBP',
-  'Manchester': 'GBP',
-
-  // North America
-  'New York': 'USD',
-  'Los Angeles': 'USD',
-  'San Francisco': 'USD',
-  'Las Vegas': 'USD',
-  'Chicago': 'USD',
-  'Toronto': 'CAD',
-  'Vancouver': 'CAD',
-
-  // Oceania
-  'Sydney': 'AUD',
-  'Melbourne': 'AUD',
-  'Brisbane': 'AUD',
-};
-
-export function getCurrencyFromCity(city: string): string {
-  // Clean up the city name and try to match
+export async function getCurrencyFromCity(city: string): Promise<string> {
   const normalizedCity = city.trim();
   
-  // Try exact match first
-  let currency = cityToCurrency[normalizedCity];
-  
-  if (!currency) {
-    // Try case-insensitive match
-    const cityLower = normalizedCity.toLowerCase();
-    const match = Object.entries(cityToCurrency).find(
-      ([key]) => key.toLowerCase() === cityLower
-    );
-    if (match) {
-      currency = match[1];
-    }
+  // Check cache first
+  const cachedCurrency = currencyCache[normalizedCity];
+  if (cachedCurrency) {
+    return cachedCurrency;
   }
 
-  // Default to USD if city not found (more common than EUR)
-  return currency || 'USD';
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    
+    const prompt = `What is the official currency (in ISO 4217 code) used in ${normalizedCity}?
+    Only respond with the 3-letter currency code in uppercase.
+    Example: For "Paris" respond with "EUR" or for "Tokyo" respond with "JPY".`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const currency = response.text().trim().toUpperCase();
+
+    // Validate that we got a proper 3-letter currency code
+    if (/^[A-Z]{3}$/.test(currency)) {
+      // Cache the result
+      currencyCache[normalizedCity] = currency;
+      return currency;
+    }
+
+    throw new Error("Invalid currency code format");
+  } catch (error) {
+    console.error(`Error getting currency for ${normalizedCity}:`, error);
+    return 'USD'; // Default to USD if there's an error
+  }
 }
 
 export async function getExchangeRate(from: string, to: string): Promise<number> {

@@ -1,3 +1,7 @@
+V0.65
+- Itinerary: Activity Card
+  - Prices only in local currency
+
 V0.64
 - Itinerary: Activity Card
   - Added Save This Trip button

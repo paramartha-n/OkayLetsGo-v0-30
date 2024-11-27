@@ -72,12 +72,8 @@ const formatPrice = async (price: string | undefined, localCurrency: string, use
       : localCurrency;
 
     const dualPrice = await formatDualPrice(amount, sourceCurrency, userCurrency);
-    return (
-      <span>
-        <span className="font-medium">{dualPrice.localPrice}</span>
-        <span className="text-muted-foreground text-xs"> ({dualPrice.userPrice})</span>
-      </span>
-    );
+    // Only return the local price
+    return <span className="font-medium">{dualPrice.localPrice}</span>;
   } catch (error) {
     console.error('Error formatting price:', error);
     return price;

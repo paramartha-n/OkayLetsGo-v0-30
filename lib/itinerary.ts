@@ -20,9 +20,10 @@ export async function generateItinerary(tripData: any) {
 
   const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-  const [originIATA, destinationIATA] = await Promise.all([
+  const [originIATA, destinationIATA, localCurrency] = await Promise.all([
     getIATACode(tripData.originCity),
-    getIATACode(tripData.city)
+    getIATACode(tripData.city),
+    getCurrencyFromCity(tripData.city)
   ]);
 
   const season = getSeason(tripData.dates.from);
@@ -31,8 +32,6 @@ export async function generateItinerary(tripData: any) {
   const numberOfDays = Math.ceil(
     (tripData.dates.to.getTime() - tripData.dates.from.getTime()) / (1000 * 60 * 60 * 24)
   );
-
-  const localCurrency = getCurrencyFromCity(tripData.city);
 
   const flightData = await generateFlightData(
     tripData.originCity,
