@@ -373,7 +373,7 @@ export default function Itinerary() {
                   <div className="pt-6 flex gap-2">
                     <button
                       onClick={() => {/* TODO: Implement save functionality */}}
-                      className={`${currentDay >= parsedItinerary.length ? 'w-full' : 'w-[47.5%]'} inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-teal-600 text-white hover:bg-teal-700 h-10 px-4 py-2`}
+                      className={`${currentDay >= parsedItinerary.length ? 'w-full' : 'w-[47.5%]'} inline-flex items-center justify-center gap-1 rounded-md text-xs sm:text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-teal-600 text-white hover:bg-teal-700 h-10 px-2 sm:px-4 py-2`}
                     >
                       <BookmarkCheck className="w-4 h-4" />
                       Save This Trip
