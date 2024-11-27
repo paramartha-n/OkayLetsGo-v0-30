@@ -1,3 +1,7 @@
+V0.60
+- Itinerary: UX
+  - Updated text for loading animation
+
 V0.59
 - User input form: UI/UX
   - Added animated placeholder with city suggestions 

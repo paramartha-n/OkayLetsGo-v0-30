@@ -5,11 +5,12 @@ import { Card } from "@/components/ui/card";
 import { Plane, Utensils, Palmtree, Mountain, Landmark, Map, Sailboat, Luggage } from "lucide-react";
 
 const loadingMessages = [
-  "Planning your adventure...",
-  "Finding hidden gems...",
-  "Crafting your journey...",
-  "Exploring destinations...",
-  "Mapping your route...",
+  "Planning your perfect adventure...",
+  "Searching for the best flights...",
+  "Finding the perfect hotel...",
+  "Discovering hidden gems and attractions...",
+  "Curating the best food and places to eat...",
+  "Mapping your ideal route...",
 ];
 
 const landmarks = [
