@@ -29,6 +29,25 @@ interface PlaceDetails {
   userRatingsTotal?: number;
 }
 
+const formatPrice = (price: string | undefined) => {
+  if (!price || price.toLowerCase() === 'free') return 'Free';
+  
+  // If it's already in the new format (e.g., "1500 JPY (€10)")
+  if (price.includes('(')) {
+    // Highlight the local currency part
+    const [localPrice, eurPrice] = price.split('(');
+    return (
+      <span>
+        <span className="font-medium">{localPrice.trim()}</span>
+        <span className="text-muted-foreground text-xs"> ({eurPrice.replace(')', '')})</span>
+      </span>
+    );
+  }
+  
+  // If it's just EUR (legacy format)
+  return price;
+};
+
 export function ActivityCard({ activity, description, city, type = 'activity', duration, price, recommendedDish }: ActivityCardProps) {
   const [placeDetails, setPlaceDetails] = useState<PlaceDetails>({ imageUrl: null });
   const [loading, setLoading] = useState(true);
@@ -229,7 +248,7 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
                 {price && (
                   <div className="flex items-center gap-1.5">
                     <Ticket className="w-4 h-4 text-primary" />
-                    <span>{price}</span>
+                    {formatPrice(price)}
                   </div>
                 )}
               </div>

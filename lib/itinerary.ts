@@ -46,8 +46,7 @@ export async function generateItinerary(tripData: any) {
     tripData.hotel.type
   );
 
-  const prompt = `
-Create a ${numberOfDays}-day itinerary for ${tripData.city}. Include activities based on these preferences:
+  const prompt = `\nCreate a ${numberOfDays}-day itinerary for ${tripData.city}. Include activities based on these preferences:
 - Activities: ${tripData.activities.join(", ")}
 - Dining: ${tripData.restaurants.join(", ")}
 - Special requests: ${tripData.preferences}
@@ -57,7 +56,7 @@ For each day, follow this EXACT format:
 Day 1:
 Morning Activity: [Name of Activity]
 Duration: [Duration in hours]
-Price: [Price in EUR or "Free"]
+Price: [Price in local currency and EUR, e.g., "1500 JPY (€10)" or "Free"]
 Description: [2-3 sentences about the place]
 
 Lunch: [Restaurant Name]
@@ -66,7 +65,7 @@ Recommended Dish: [Dish Name] - [Brief description of the dish]
 
 Afternoon Activity: [Name of Activity]
 Duration: [Duration in hours]
-Price: [Price in EUR or "Free"]
+Price: [Price in local currency and EUR, e.g., "1500 JPY (€10)" or "Free"]
 Description: [2-3 sentences about the place]
 
 Dinner: [Restaurant Name]
@@ -82,7 +81,8 @@ Important formatting rules:
 4. Use exact labels: "Morning Activity:", "Duration:", "Price:", etc.
 5. For restaurants, always include a recommended dish
 6. For activities, always specify duration and price
-7. Use proper line breaks between sections
+7. For prices, always show both local currency and EUR equivalent in parentheses
+8. Use proper line breaks between sections
 `;
 
   let retryCount = 0;

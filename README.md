@@ -1,3 +1,7 @@
+V0.62
+- Itinerary: Activity Card
+  - Entrance price shows in local currency and also Euro
+
 V0.61
 - Itinerary: UX
   - Fixed text for loading animation to be on single line
