@@ -51,43 +51,58 @@ const cityToCurrency: CurrencyMap = {
 export function getCurrencyFromCity(city: string): string {
   // Clean up the city name and try to match
   const normalizedCity = city.trim();
-  const currency = cityToCurrency[normalizedCity];
   
-  // Default to EUR if city not found
-  return currency || 'EUR';
+  // Try exact match first
+  let currency = cityToCurrency[normalizedCity];
+  
+  if (!currency) {
+    // Try case-insensitive match
+    const cityLower = normalizedCity.toLowerCase();
+    const match = Object.entries(cityToCurrency).find(
+      ([key]) => key.toLowerCase() === cityLower
+    );
+    if (match) {
+      currency = match[1];
+    }
+  }
+
+  // Default to USD if city not found (more common than EUR)
+  return currency || 'USD';
 }
 
 export async function getExchangeRate(from: string, to: string): Promise<number> {
+  // If same currency, return 1
+  if (from === to) return 1;
+
   const apiKey = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_KEY;
   if (!apiKey) {
     console.error('Free Currency API key not found');
-    return 1; // Fallback to 1:1 rate
+    return 1;
   }
 
   try {
     const url = `https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}&base_currency=${from}&currencies=${to}`;
-    console.log('Fetching exchange rate:', { from, to, url });
-    
     const response = await fetch(url);
     
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`HTTP error! status: ${response.status}, response:`, errorText);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const data = await response.json();
-    console.log('Exchange rate response:', data);
     
-    if (!data.data || !data.data[to]) {
-      console.error('Invalid response format:', data);
-      throw new Error('Invalid response format');
+    if (!data.data || typeof data.data[to] !== 'number') {
+      throw new Error('Invalid response format or missing rate');
     }
     
-    return data.data[to];
+    const rate = data.data[to];
+    if (rate <= 0) {
+      throw new Error('Invalid exchange rate (less than or equal to 0)');
+    }
+    
+    return rate;
   } catch (error) {
     console.error('Error fetching exchange rate:', error);
-    return 1; // Fallback to 1:1 rate
+    return 1;
   }
 }
 
@@ -99,15 +114,17 @@ export function formatCurrency(amount: string | number, currency: string): strin
   }
 
   try {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: currency,
+    // Format number with 2 decimal places
+    const formattedNumber = new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).format(numericAmount);
+
+    // Return with ISO currency code
+    return `${formattedNumber} ${currency}`;
   } catch (error) {
-    // Fallback formatting if currency code is invalid
-    return `${currency} ${numericAmount.toFixed(2)}`;
+    // Fallback formatting if something goes wrong
+    return `${numericAmount.toFixed(2)} ${currency}`;
   }
 }
 

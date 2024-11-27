@@ -37,18 +37,41 @@ const formatPrice = async (price: string | undefined, localCurrency: string, use
   
   // Extract the numeric amount from the price string
   let amount: string | number = price;
+  let extractedCurrency: string | null = null;
+
+  // Remove any currency symbols and extra spaces
+  const cleanPrice = price.trim().replace(/[,]/g, '');
+
   if (price.includes('(')) {
-    // If price is in format "1500 JPY (€10)", extract the local amount
-    const [localPrice] = price.split('(');
-    const [numericAmount] = localPrice.trim().split(' ');
-    amount = numericAmount;
-  } else if (price.includes('€')) {
-    // If price is in EUR format
-    amount = price.replace('€', '').trim();
+    // Format: "1500 JPY (10 EUR)"
+    const [localPrice] = cleanPrice.split('(');
+    const parts = localPrice.trim().split(' ');
+    amount = parts[0];
+    if (parts[1] && /^[A-Z]{3}$/.test(parts[1])) {
+      extractedCurrency = parts[1];
+    }
+  } else {
+    // Format: either "10 EUR" or just "10"
+    const parts = cleanPrice.split(' ');
+    if (parts.length >= 2 && /^[A-Z]{3}$/.test(parts[1])) {
+      amount = parts[0];
+      extractedCurrency = parts[1];
+    } else {
+      // Try to extract number from the beginning of the string
+      const match = cleanPrice.match(/^[\d.]+/);
+      if (match) {
+        amount = match[0];
+      }
+    }
   }
 
   try {
-    const dualPrice = await formatDualPrice(amount, localCurrency, userCurrency);
+    // Use extracted currency if available and valid
+    const sourceCurrency = (extractedCurrency && /^[A-Z]{3}$/.test(extractedCurrency))
+      ? extractedCurrency
+      : localCurrency;
+
+    const dualPrice = await formatDualPrice(amount, sourceCurrency, userCurrency);
     return (
       <span>
         <span className="font-medium">{dualPrice.localPrice}</span>

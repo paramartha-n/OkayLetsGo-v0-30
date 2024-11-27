@@ -1,3 +1,8 @@
+V0.64
+- Itinerary: Activity Card
+  - Added Save This Trip button
+  - Prices shows currency code instead of currency symbol
+
 V0.63
 - Itinerary: Activity Card
   - Dual currency support from user selected currency

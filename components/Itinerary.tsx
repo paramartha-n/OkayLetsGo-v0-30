@@ -4,7 +4,7 @@ import * as React from "react";
 import { useEffect, useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2, BookmarkCheck } from "lucide-react";
 import { useTripContext } from "@/context/TripContext";
 import { FlightCard } from "@/components/flight-card";
 import { HotelCard } from "@/components/hotel-card";
@@ -370,17 +370,24 @@ export default function Itinerary() {
                     ))}
                   </div>
 
-                  {currentDay < parsedItinerary.length && (
-                    <div className="pt-6">
+                  <div className="pt-6 flex gap-2">
+                    <button
+                      onClick={() => {/* TODO: Implement save functionality */}}
+                      className={`${currentDay >= parsedItinerary.length ? 'w-full' : 'w-[47.5%]'} inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-teal-600 text-white hover:bg-teal-700 h-10 px-4 py-2`}
+                    >
+                      <BookmarkCheck className="w-4 h-4" />
+                      Save This Trip
+                    </button>
+                    {currentDay < parsedItinerary.length && (
                       <button
                         onClick={() => handleDayChange(currentDay + 1)}
-                        className="w-full inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                        className="w-[52.5%] inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
                       >
                         Next Day
                         <ArrowRight className="w-4 h-4" />
                       </button>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </Card>
             </>
