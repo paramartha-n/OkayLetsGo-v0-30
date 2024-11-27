@@ -7,21 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDualPrice, DualPriceResult } from "@/lib/currency";
-
-interface ActivityCardProps {
-  activity: string;
-  description: string;
-  city: string;
-  type?: 'activity' | 'lunch' | 'dinner';
-  duration?: string;
-  price?: string;
-  localCurrency: string;
-  userCurrency: string;
-  recommendedDish?: {
-    name: string;
-    description: string;
-  };
-}
+import { useCurrency } from '@/hooks/useCurrency';
 
 interface PlaceDetails {
   imageUrl: string | null;
@@ -80,17 +66,29 @@ const formatPrice = async (price: string | undefined, localCurrency: string, use
   }
 };
 
-export function ActivityCard({ 
-  activity, 
-  description, 
-  city, 
-  type = 'activity', 
-  duration, 
-  price, 
-  localCurrency,
+export function ActivityCard({
+  activity,
+  description,
+  city,
+  type,
+  duration,
+  price,
   userCurrency,
-  recommendedDish 
-}: ActivityCardProps) {
+  recommendedDish,
+}: {
+  activity: string;
+  description: string;
+  city: string;
+  type: 'activity' | 'lunch' | 'dinner';
+  duration?: string;
+  price?: string;
+  userCurrency: string;
+  recommendedDish?: {
+    name: string;
+    description: string;
+  };
+}) {
+  const localCurrency = useCurrency(city);
   const [placeDetails, setPlaceDetails] = useState<PlaceDetails>({ imageUrl: null });
   const [loading, setLoading] = useState(true);
   const [formattedPrice, setFormattedPrice] = useState<string | JSX.Element>(price || '');

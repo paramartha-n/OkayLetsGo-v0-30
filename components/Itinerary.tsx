@@ -362,7 +362,6 @@ export default function Itinerary() {
                           type={activity.type}
                           duration={activity.duration}
                           price={activity.price}
-                          localCurrency={getCurrencyFromCity(tripData.city)}
                           userCurrency={tripData.currency}
                           recommendedDish={activity.recommendedDish}
                         />
