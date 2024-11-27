@@ -1,3 +1,13 @@
+V0.61
+- Itinerary: UX
+  - Fixed text for loading animation to be on single line
+
+- User input form: UI/UX
+  - For mobile: Doubled the width of next and previous buttons
+
+- Itinerary: Flight Card
+  - Updated airport code to be on a separate line
+
 V0.60
 - Itinerary: UX
   - Updated text for loading animation

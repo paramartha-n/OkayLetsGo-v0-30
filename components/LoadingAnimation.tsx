@@ -84,10 +84,10 @@ export const LoadingAnimation = ({ retryCount = 0, maxRetries = 3 }: LoadingAnim
         </div>
 
         {/* Loading message */}
-        <p className="text-base sm:text-sm text-center text-muted-foreground">
+        <p className="text-[2.7vw] md:text-base whitespace-nowrap text-center text-muted-foreground">
           {loadingMessages[messageIndex]}
           {retryCount > 0 && (
-            <span className="block text-sm sm:text-xs mt-2 sm:mt-1">
+            <span className="block text-[2.2vw] md:text-sm mt-2 sm:mt-1">
               Attempt {retryCount} of {maxRetries}
             </span>
           )}

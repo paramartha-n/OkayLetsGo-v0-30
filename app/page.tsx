@@ -125,13 +125,13 @@ export default function Home() {
                           <Button
                             variant="outline"
                             onClick={handlePrevious}
-                            className="w-[20%] md:w-[15%]"
+                            className="w-[40%] md:w-[15%]"
                           >
                             <ArrowLeft className="w-5 h-5" />
                           </Button>
                           <Button 
                             onClick={handleNext} 
-                            className="w-[20%] md:w-[15%]"
+                            className="w-[40%] md:w-[15%]"
                             disabled={needsValidation && !isStepValid}
                           >
                             <ArrowRight className="w-5 h-5" />
@@ -144,7 +144,7 @@ export default function Home() {
                           <Button
                             variant="outline"
                             onClick={handlePrevious}
-                            className="w-[20%] md:w-[15%]"
+                            className="w-[40%] md:w-[15%]"
                           >
                             <ArrowLeft className="w-5 h-5" />
                           </Button>

@@ -43,12 +43,18 @@ export function FlightCard({
   destination,
 }: FlightCardProps) {
   const displayOrigin = origin?.nearestAirport
-    ? `${origin.nearestAirport.city} (${origin.nearestAirport.code})`
-    : originCity;
+    ? {
+        city: origin.nearestAirport.city,
+        code: origin.nearestAirport.code
+      }
+    : { city: originCity, code: "" };
 
   const displayDestination = destination?.nearestAirport
-    ? `${destination.nearestAirport.city} (${destination.nearestAirport.code})`
-    : destinationCity;
+    ? {
+        city: destination.nearestAirport.city,
+        code: destination.nearestAirport.code
+      }
+    : { city: destinationCity, code: "" };
 
   return (
     <Card className="p-6">
@@ -76,13 +82,25 @@ export function FlightCard({
             <div className="relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[11px] sm:text-sm font-bold">{displayOrigin}</p>
+                  <p className="text-[11px] sm:text-sm font-bold">{displayOrigin.city}</p>
+                  {displayOrigin.code && (
+                    <p className="text-[10px] sm:hidden font-medium text-muted-foreground">({displayOrigin.code})</p>
+                  )}
+                  <p className="hidden sm:block text-[11px] sm:text-sm font-bold">
+                    {displayOrigin.code && `(${displayOrigin.code})`}
+                  </p>
                   <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(departureDate, "MMM d, yyyy")}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[11px] sm:text-sm font-bold">{displayDestination}</p>
+                  <p className="text-[11px] sm:text-sm font-bold">{displayDestination.city}</p>
+                  {displayDestination.code && (
+                    <p className="text-[10px] sm:hidden font-medium text-muted-foreground">({displayDestination.code})</p>
+                  )}
+                  <p className="hidden sm:block text-[11px] sm:text-sm font-bold">
+                    {displayDestination.code && `(${displayDestination.code})`}
+                  </p>
                   <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(departureDate, "MMM d, yyyy")}
                   </p>
@@ -106,13 +124,25 @@ export function FlightCard({
             <div className="relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[11px] sm:text-sm font-bold">{displayDestination}</p>
+                  <p className="text-[11px] sm:text-sm font-bold">{displayDestination.city}</p>
+                  {displayDestination.code && (
+                    <p className="text-[10px] sm:hidden font-medium text-muted-foreground">({displayDestination.code})</p>
+                  )}
+                  <p className="hidden sm:block text-[11px] sm:text-sm font-bold">
+                    {displayDestination.code && `(${displayDestination.code})`}
+                  </p>
                   <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(returnDate, "MMM d, yyyy")}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[11px] sm:text-sm font-bold">{displayOrigin}</p>
+                  <p className="text-[11px] sm:text-sm font-bold">{displayOrigin.city}</p>
+                  {displayOrigin.code && (
+                    <p className="text-[10px] sm:hidden font-medium text-muted-foreground">({displayOrigin.code})</p>
+                  )}
+                  <p className="hidden sm:block text-[11px] sm:text-sm font-bold">
+                    {displayOrigin.code && `(${displayOrigin.code})`}
+                  </p>
                   <p className="text-[10px] sm:text-sm text-muted-foreground">
                     {format(returnDate, "MMM d, yyyy")}
                   </p>
