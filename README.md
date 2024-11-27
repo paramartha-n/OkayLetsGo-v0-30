@@ -1,3 +1,7 @@
+V0.63
+- Itinerary: Activity Card
+  - Dual currency support from user selected currency
+
 V0.62
 - Itinerary: Activity Card
   - Entrance price shows in local currency and also Euro

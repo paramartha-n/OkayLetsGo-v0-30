@@ -6,6 +6,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { formatDualPrice, DualPriceResult } from "@/lib/currency";
 
 interface ActivityCardProps {
   activity: string;
@@ -14,6 +15,8 @@ interface ActivityCardProps {
   type?: 'activity' | 'lunch' | 'dinner';
   duration?: string;
   price?: string;
+  localCurrency: string;
+  userCurrency: string;
   recommendedDish?: {
     name: string;
     description: string;
@@ -29,30 +32,59 @@ interface PlaceDetails {
   userRatingsTotal?: number;
 }
 
-const formatPrice = (price: string | undefined) => {
+const formatPrice = async (price: string | undefined, localCurrency: string, userCurrency: string) => {
   if (!price || price.toLowerCase() === 'free') return 'Free';
   
-  // If it's already in the new format (e.g., "1500 JPY (€10)")
+  // Extract the numeric amount from the price string
+  let amount: string | number = price;
   if (price.includes('(')) {
-    // Highlight the local currency part
-    const [localPrice, eurPrice] = price.split('(');
+    // If price is in format "1500 JPY (€10)", extract the local amount
+    const [localPrice] = price.split('(');
+    const [numericAmount] = localPrice.trim().split(' ');
+    amount = numericAmount;
+  } else if (price.includes('€')) {
+    // If price is in EUR format
+    amount = price.replace('€', '').trim();
+  }
+
+  try {
+    const dualPrice = await formatDualPrice(amount, localCurrency, userCurrency);
     return (
       <span>
-        <span className="font-medium">{localPrice.trim()}</span>
-        <span className="text-muted-foreground text-xs"> ({eurPrice.replace(')', '')})</span>
+        <span className="font-medium">{dualPrice.localPrice}</span>
+        <span className="text-muted-foreground text-xs"> ({dualPrice.userPrice})</span>
       </span>
     );
+  } catch (error) {
+    console.error('Error formatting price:', error);
+    return price;
   }
-  
-  // If it's just EUR (legacy format)
-  return price;
 };
 
-export function ActivityCard({ activity, description, city, type = 'activity', duration, price, recommendedDish }: ActivityCardProps) {
+export function ActivityCard({ 
+  activity, 
+  description, 
+  city, 
+  type = 'activity', 
+  duration, 
+  price, 
+  localCurrency,
+  userCurrency,
+  recommendedDish 
+}: ActivityCardProps) {
   const [placeDetails, setPlaceDetails] = useState<PlaceDetails>({ imageUrl: null });
   const [loading, setLoading] = useState(true);
+  const [formattedPrice, setFormattedPrice] = useState<string | JSX.Element>(price || '');
   const [retryCount, setRetryCount] = useState(0);
   const MAX_RETRIES = 3;
+
+  useEffect(() => {
+    const updatePrice = async () => {
+      const formatted = await formatPrice(price, localCurrency, userCurrency);
+      setFormattedPrice(formatted);
+    };
+    updatePrice();
+  }, [price, localCurrency, userCurrency]);
 
   useEffect(() => {
     const fetchPlaceDetails = async (attempt: number = 0) => {
@@ -248,7 +280,7 @@ export function ActivityCard({ activity, description, city, type = 'activity', d
                 {price && (
                   <div className="flex items-center gap-1.5">
                     <Ticket className="w-4 h-4 text-primary" />
-                    {formatPrice(price)}
+                    {formattedPrice}
                   </div>
                 )}
               </div>

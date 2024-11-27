@@ -12,6 +12,7 @@ import { ActivityCard } from "@/components/ActivityCard";
 import { LoadingAnimation } from "@/components/LoadingAnimation";
 import { generateItinerary } from "@/lib/gemini";
 import { TripHeader } from "./trip-header";
+import { getCurrencyFromCity } from "@/lib/currency";
 
 interface FlightInfo {
   outbound: {
@@ -361,6 +362,8 @@ export default function Itinerary() {
                           type={activity.type}
                           duration={activity.duration}
                           price={activity.price}
+                          localCurrency={getCurrencyFromCity(tripData.city)}
+                          userCurrency={tripData.currency}
                           recommendedDish={activity.recommendedDish}
                         />
                       </React.Fragment>

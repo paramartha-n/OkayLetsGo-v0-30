@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getIATACode, estimateFlightPrice, generateFlightData } from "./flight";
 import { generateHotelData } from "./hotel";
+import { getCurrencyFromCity } from "./currency";
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
 
@@ -31,6 +32,8 @@ export async function generateItinerary(tripData: any) {
     (tripData.dates.to.getTime() - tripData.dates.from.getTime()) / (1000 * 60 * 60 * 24)
   );
 
+  const localCurrency = getCurrencyFromCity(tripData.city);
+
   const flightData = await generateFlightData(
     tripData.originCity,
     tripData.city,
@@ -56,7 +59,7 @@ For each day, follow this EXACT format:
 Day 1:
 Morning Activity: [Name of Activity]
 Duration: [Duration in hours]
-Price: [Price in local currency and EUR, e.g., "1500 JPY (€10)" or "Free"]
+Price: [Price in ${localCurrency}, e.g., "1500 ${localCurrency}" or "Free"]
 Description: [2-3 sentences about the place]
 
 Lunch: [Restaurant Name]
@@ -65,7 +68,7 @@ Recommended Dish: [Dish Name] - [Brief description of the dish]
 
 Afternoon Activity: [Name of Activity]
 Duration: [Duration in hours]
-Price: [Price in local currency and EUR, e.g., "1500 JPY (€10)" or "Free"]
+Price: [Price in ${localCurrency}, e.g., "1500 ${localCurrency}" or "Free"]
 Description: [2-3 sentences about the place]
 
 Dinner: [Restaurant Name]
@@ -81,7 +84,7 @@ Important formatting rules:
 4. Use exact labels: "Morning Activity:", "Duration:", "Price:", etc.
 5. For restaurants, always include a recommended dish
 6. For activities, always specify duration and price
-7. For prices, always show both local currency and EUR equivalent in parentheses
+7. For prices, show only the local currency amount (${localCurrency})
 8. Use proper line breaks between sections
 `;
 
